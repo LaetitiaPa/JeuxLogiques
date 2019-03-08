@@ -1,0 +1,10 @@
+com\openclassrooms\game\Menu.class
+com\openclassrooms\game\MainGame.class
+com\openclassrooms\game\Game.class
+com\openclassrooms\game\MoreLess.class
+com\openclassrooms\game\Config.class
+com\openclassrooms\game\AlgoPlusMoins.class
+com\openclassrooms\game\GameException.class
+com\openclassrooms\game\Main.class
+com\openclassrooms\game\AlgoMastermind.class
+com\openclassrooms\game\Mastermind.class
