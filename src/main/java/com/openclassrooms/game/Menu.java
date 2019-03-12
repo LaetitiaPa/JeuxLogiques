@@ -1,55 +1,107 @@
 package com.openclassrooms.game;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Scanner;
 
+/**
+ * La classe Menu définit la structure des différents menus présent dans le programme
+ * Elle est également le point d'entrée et permet de lancer une partie à partir de la méthode display()
+ * <p>
+ * La classe Menu est caractérisée par les informations suivantes :
+ * <ul>
+ * <li>Un choix de jeu</li>
+ * <li>Un choix de mode</li>
+ * <li>Un choix de menu de fin de partie</li>
+ * </ul>
+ * </p>
+ */
 public class Menu {
-    private int endGameChoice;
-    private int gameChoice;
-    private int modeChoice;
-    private final List<Integer> gameChoices = Arrays.asList(1, 2);
-    private final List<Integer> modeChoices = Arrays.asList(1, 2, 3);
-    private final List<Integer> endGameChoices = Arrays.asList(1, 2, 3);
+    private static int endGameChoice;
+    private static int gameChoice;
+    private static int modeChoice;
+    private static final List<Integer> gameChoices = Arrays.asList(1, 2);
+    private static final List<Integer> modeChoices = Arrays.asList(1, 2, 3);
+    private static final List<Integer> endGameChoices = Arrays.asList(1, 2, 3);
 
-    public void display() {
-        while (!gameChoices.contains(this.gameChoice)) {
-            this.askGame();
+    /**
+     *
+     * Affiche le menu des jeux et des modes à partir de la saisie du joueur
+     *
+     * TANT QUE la valeur saisie n'est pas dans la liste, on affiche le menu correspondant
+     *
+     * Enfin on appelle la méthode runGame() qui instancie le jeu choisi
+     *
+     */
+    public static void display() {
+        while (!gameChoices.contains(gameChoice)) {
+            askGame();
         }
 
-        while (!modeChoices.contains(this.modeChoice)){
-            this.askMode();
+        while (!modeChoices.contains(modeChoice)){
+            askMode();
         }
-        this.runGame();
+            runGame();
     }
 
-    public void displayEndMenu() {
-        while(!endGameChoices.contains(this.endGameChoice)) {
-            this.endGameMenu();
+    /**
+     * TANT QUE la valeur saisie n'est pas dans la liste, on affiche le menu
+     *
+     */
+    public static void displayEndMenu() {
+        while(!endGameChoices.contains(endGameChoice)) {
+            endGameMenu();
         }
     }
 
-    private void askGame() {
+    /**
+     * Menu des jeux proposant les possibilités suivantes:
+     *
+     * 1/ Plus ou Moins
+     * 2/ Mastermind
+     * 3/ Quitter
+     *
+     * Stock la saisie du joueur dans la variable gameChoice
+     */
+    private static void askGame() {
         Scanner input = new Scanner(System.in);
         System.out.println("Veuillez choisir un jeu :");
         System.out.println(" 1- Plus ou Moins");
         System.out.println(" 2- Mastermind");
         System.out.println(" 3- Quitter");
 
-        this.gameChoice = input.nextInt();
+        gameChoice = input.nextInt();
+
     }
 
-    private void askMode() {
+    /**
+     * Menu des modes proposant les possibilités suivantes:
+     *
+     * 1/ Challenger
+     * 2/ Défenseur
+     * 3/ Duel
+     *
+     * Stock la saisie du joueur dans la variable modeChoice
+     */
+    private static void askMode() {
         Scanner input = new Scanner(System.in);
         System.out.println("Veuillez choisir un mode: ");
-        System.out.println("1- Challenger : ");
-        System.out.println("2- Défenseur : ");
-        System.out.println("3- Duel : ");
+        System.out.println("1- Challenger");
+        System.out.println("2- Défenseur");
+        System.out.println("3- Duel");
 
-        this.modeChoice = input.nextInt();
+        modeChoice = input.nextInt();
+
     }
 
-    private void runGame() {
+    /**
+     * Instancie le jeu choisi à partir de la classe du jeu
+     * Lance la partie en utilisant la méthode run() de la classe Game
+     *
+     * 1/ Instancie la classe MoreLess
+     * 2/ Instancie la classe Mastermind
+     * 3/ La méthode quit() est exécutée
+     */
+    private static void runGame() {
         if (gameChoice == 1) {
             MoreLess moreLess = new MoreLess(modeChoice, gameChoice);
             moreLess.run();
@@ -59,33 +111,48 @@ public class Menu {
             mastermind.run();
 
         } else if(gameChoice == 3) {
-            this.quit();
+            quit();
         }
     }
 
-    private void quit() {
+    /**
+     * Utilise la méthode exit() afin d'interrompre le programme
+     */
+    private static void quit() {
         System.out.println("Bye bye !");
         System.exit(0);
     }
 
-    public void endGameMenu(){
+    /**
+     * Menu de fin de partie proposant les choix suivantes:
+     *
+     * 1/ Rejouer
+     * 2/ Changer de jeu
+     * 3/ Quitter
+     *
+     * Stock la saisie du joueur dans la variable endGameChoice
+     */
+    public static void endGameMenu(){
         Scanner input = new Scanner(System.in);
-        System.out.println(" 1- Rejouer ");
+        System.out.println(" 1- Rejouer");
         System.out.println(" 2- Changer de jeu");
         System.out.println(" 3- Quitter");
 
-        this.endGameChoice = input.nextInt();
-        this.endChoiceMenu();
+        endGameChoice = input.nextInt();
+        endChoiceMenu();
     }
 
-    public void endChoiceMenu() {
+    /**
+     * Lance les méthodes correspondant au choix saisi dans la méthode endGameMenu()
+     */
+    public static void endChoiceMenu() {
         if(endGameChoice == 1) {
-            this.askMode();
+            runGame();
         } else if(endGameChoice == 2) {
-            this.display();
+            askMode();
+            runGame();
         } else if(endGameChoice == 3) {
             System.exit(0);
         }
     }
 }
-

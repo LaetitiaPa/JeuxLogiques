@@ -1,25 +1,76 @@
-# Presentation du mini projet maven
-C'est un mini projet maven qui intègre la gestion des dependances log4j et junit et l'intégration de log4j.xml et config.properties de base
-et configexternal.properties pour externaliser le .properties hors du jar.
+#Présentation du projet
 
-# Pré requis
-- Avoir minimum JAVA 1.8
-- Installer Maven (disponible en ligne de commande)
+Ce projet s'inscrit dans le parcours de formation Openclassrooms de Développeur d'Application Java.
+Il a pour but le développement d'une application comprenant 2 jeux:
 
-# Build du projet 
+-Jeu de recherche +/-
 
-mvn  clean package
+-Mastermind
 
-# Execution du projet
+Le joueur a le choix entre 3 modes:
+
+- Challenger: Le joueur doit trouver la combinaison secrète de l'ordinateur
+
+- Défenseur: L'ordinateur doit à son tour trouver la combinaison secrète du joueur
+
+- Duel: Tour à tour, le joueur et l'ordinateur s'affrontent pour trouver la combinaison secrète de chacun
+
+
+#Présentation des livrables attendus
+
+Ce projet contient les livrables suivants:
+
+- Le code source de l'application
+- La Javadoc correspondante
+- Le fichier de configuration
+
+
+#Préquis
+
+Vous devez disposer au minimum de la version JDK 1.8.
+Si ce n'est pas le cas, vous pouvez la télécharger via ce lien: https://www.oracle.com/technetwork/java/javase/downloads/jdk8-downloads-2133151.html
+
+
+
+#Synthèse règle des jeux
+
+Voici les règles des jeux présents dans l'application:
+
+
+- Jeu de recherche +/-
+
+Découvrir la combinaison à x chiffres de l'adversaire (le défenseur). Pour ce faire, l'attaquant fait une proposition. 
+Le défenseur indique pour chaque chiffre de la combinaison proposée si le chiffre de sa combinaison est plus grand (+), plus petit (-) ou si c'est le bon chiffre (=).
+
+L'attaquant doit deviner la combinaison secrète en un nombre limité d'essais.
+
+- Mastermind
+
+Le but : découvrir la combinaison à x chiffres/couleurs de l'adversaire (le défenseur). Pour ce faire, l'attaquant fait une proposition. 
+Le défenseur indique pour chaque proposition le nombre de chiffre/couleur de la proposition qui apparaissent à la bonne place ou présent mais à la mauvaise place dans la combinaison secrète.
+
+L'attaquant doit deviner la combinaison secrète en un nombre limité d'essais.
+
+
+#Lancement du jeu
+
 ** Aller dans le 'target':
 cd  target
-** Lancer l'exceution
+** Lancer l'exécution
 java -jar  game.jar
 
-** Pour externaliser le fichier de config.properties
-créer un repertoire 'config' au niveau que game.jar et ajouter un fichier  configexternal.properties
-** lancer
-java  -jar game.jar  --ext
+Ou 
 
-# Logs
-les fichiers de logs sont dans le "logs/game.log"  au même niveau que game.jar
+Télécharger le fichier .exe et et exécuter le fichier .bat
+
+
+#Lien Github
+
+https://github.com/LaetitiaPa/JeuxLogiques
+
+
+#Divers
+
+Vous trouverez les règles du Mastermind ici si besoin: http://fr.wikipedia.org/wiki/Mastermind
+
+

@@ -3,8 +3,22 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Scanner;
 
+
+/**
+ * La classe Mastermind contient toutes les caractéristiques du jeu Mastermind
+ * Elle hérite de la classe Game
+ * <p>
+ * Le Mastermind se caractérise par les informations suivantes :
+ * <ul>
+ * <li>Un ou une combinaison de chiffres bien placés</li>
+ * <li>Un ou une combinaison de chiffres présents</li>
+ * </ul>
+ *
+ * @see Game#mode
+ * @see Game#gameChoice
+ * </p>
+ */
 public class Mastermind extends Game {
-    // Bien placé (en anglais) est un attribut de l'instance de Mastermind
     private int present;
     private int wellPlaced;
 
@@ -12,6 +26,13 @@ public class Mastermind extends Game {
         super(mode, gameChoice);
     }
 
+    /**
+     * Vérification des entrées du tableau proposition avec celui du tableau solution
+     * Incrémenter la variable present lorsque l'élément est présent dans le tableau solution
+     * Incrémenter la variable wellPlaced lorsque l'élément se trouve à la même position que dans le tableau solution
+     *
+     * Les variables present et wellPlaced sont instanciées selon les résultats
+     */
     public void checkProposition() {
         // To be improved to avoid cast at each call
         List<String> propositionAsList = Arrays.asList(proposition);
@@ -27,13 +48,34 @@ public class Mastermind extends Game {
         }
     }
 
+    /**
+     * Retourne vrai ou faux selon la valeur de la variable wellPlaced
+     *
+     * @return vrai si wellPlaced est égal à 4, sinon retourne faux
+     */
     public Boolean isResolved() {
         return wellPlaced == 4 ? true : false;
     }
 
-    public void displayResponse(){
-        System.out.println("Proposition : "+this.getProp()+ " Réponse => " +this.present+ " présent et " +this.wellPlaced+ "  bien placé" );
+    /**
+     * Génére la réponse affichée selon le contenu des variables present et wellPlaced
+     * afin de pouvoir gérer les phrases au singulier ou au pluriel
+     *
+     */
+    public void displayResponse() {
+        if (present == 0 && wellPlaced == 1) {
+            System.out.println("Proposition : " + this.getProp() + " Réponse => " + wellPlaced + " bien placé");
+        } else if (present == 0 && wellPlaced <= 3) {
+            System.out.println("Proposition : " + this.getProp() + " Réponse => " + wellPlaced + " bien placés");
+        } else if (present == 1 && wellPlaced <= 3) {
+            System.out.println("Proposition : " + this.getProp() + " Réponse => " + present + " présent," + wellPlaced + " bien placés");
+        } else if (present <= 3 && wellPlaced <= 3) {
+            System.out.println("Proposition : " + this.getProp() + " Réponse => " + present + " présents, " + wellPlaced + " bien placés");
+        } else if (present > 1 && wellPlaced == 0) {
+            System.out.println("Proposition : " + this.getProp() + " Réponse => " + present + " présents");
+        }
     }
 }
+
 
 
