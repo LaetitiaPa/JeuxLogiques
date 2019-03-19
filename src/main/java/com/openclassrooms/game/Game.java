@@ -1,11 +1,14 @@
 package com.openclassrooms.game;
+import java.util.InputMismatchException;
 import java.util.Scanner;
 import java.util.concurrent.ThreadLocalRandom;
+
+import static java.lang.Integer.parseInt;
 
 /**
  * La classe Game contient toutes les caractéristiques d'un jeu
  * <p>
- * un jeu est caractérisé par les informations suivantes :
+ * un jeu se caractérise par les informations suivantes :
  * <ul>
  * <li>Une combinaison secrète.</li>
  * <li>Une proposition entrée par l'adversaire.</li>
@@ -19,12 +22,8 @@ import java.util.concurrent.ThreadLocalRandom;
 abstract class Game {
 
     /**
-     * Le nombre d'essais n'est pas modifiable depuis la classe
-     */
-    final int MAX_NUM_TRY = 3;
-
-    /**
-     * Le choix du jeu. Peut être modifiée
+     * Le choix du jeu. Peut être récupérée
+     * @see Game#getGameChoice()
      */
     protected int gameChoice;
 
@@ -32,11 +31,11 @@ abstract class Game {
      * La combinaison secrète: Peut être récupérée
      * @see Game#getCombination()
      */
-    protected int combination;
+    protected int combination = 0;
 
     /**
      * La valeur de la proposition: Peut être récupérée
-     * @see Game#getCombination()
+     * @see Game#getProp()
      */
     protected  int prop;
 
@@ -69,7 +68,7 @@ abstract class Game {
     /**
      * Constructeur Game
      * <p>
-     * A la construction d'un objet Game, le "mode" et le jeu du jeu sont attendus en paramètre
+     * A la construction d'un objet Game, le "mode" et le jeu choisis sont attendus en paramètre
      * vide.
      * </p>
      *
@@ -90,30 +89,21 @@ abstract class Game {
      *  Affiche le message de fin de partie
      *  Affiche le menu de fin
      *</p>
-     * @throws GameException si les chiffres saisis sont supérieurs à 4
      */
-
     public void run() {
         if(getMode() == 1 || getMode() == 3) {
             generateChallengerCombination();
         }else if(getMode() == 2) {
-            try {
-                generateDefenderCombination();
-            } catch (GameException e) {
-                System.out.println(e.toString());
-            }
-        }
-       if ("true".equals(Config.getValue("cheatmode"))) {
-           System.out.println(getCombination());
+            generateDefenderCombination();
+        }if ("true".equals(Config.getValue("cheatmode"))) {
+            System.out.println(getCombination());
        }
-
         while (isRunning()) {
             this.response = "";
 
             if(this.getMode() == 1) {
                 try {
                     challenger();
-
                 } catch (GameException e) {
                     System.out.println(e.toString());
                     continue;
@@ -123,11 +113,9 @@ abstract class Game {
 
             } else if(this.getMode() == 3) {
                 defender();
-
                 checkProposition();
                 displayResponse();
                 this.numTry++;
-
                 try {
                     challenger();
                 } catch (GameException e) {
@@ -138,12 +126,12 @@ abstract class Game {
                 displayResponse();
                 this.numTry++;
         }
-        if(isResolved()) {
-            System.out.println("Vous avez gagné !");
-        } else {
-            System.out.println("Vous avez perdu !");
-        }
-            Menu.displayEndMenu();
+            if(isResolved()) {
+                System.out.println("Vous avez gagné !");
+            } else {
+                System.out.println("Vous avez perdu !");
+            }
+                Menu.displayEndMenu();
     }
 
     /**
@@ -152,9 +140,11 @@ abstract class Game {
      * @return La combinaison générée par la méthode ThreadLocalRandom
      */
     public int generateChallengerCombination() {
-        combination = ThreadLocalRandom.current().nextInt(1000, 9000);
+        int nbreChiffres = parseInt(Config.getValue("nbreChiffres"));
+        combination = ThreadLocalRandom.current().nextInt(nbreChiffres);
         String solution_ = Integer.toString(combination);
         solution = solution_.split("");
+
         return combination;
     }
 
@@ -162,43 +152,69 @@ abstract class Game {
      *  Saisi de la combinaison secrète par le joueur
      *  La combinaison entrée devient la solution de la partie en cours
      *
-     * @throws GameException si les chiffres saisis sont supérieurs à 4
+     * @throws GameException si les chiffres saisis sont supérieurs ou inférieurs au nombre attendu
      */
-    public void generateDefenderCombination() throws  GameException {
-        System.out.println("Entrez votre combinaison secrète: ");
-        Scanner reader = new Scanner(System.in);
-        combination = reader.nextInt();
-        if (combination >= 10000) {
-            throw new GameException("Une combinaison à 4 chiffres est attendue");
+    public void generateDefenderCombination() {
+        int nbreChiffres = parseInt(Config.getValue("nbreChiffres"));
+        System.out.println("Veuillez saisir une combinaison de " + nbreChiffres + " chiffres ");
+        boolean demandeSaisie = true;
+        boolean isNumber;
+
+        while (demandeSaisie) {
+            Scanner scan = new Scanner(System.in);
+            try {
+                combination = scan.nextInt();
+                isNumber = true;
+            }
+            catch(InputMismatchException inputException) {
+                System.out.println("Veuillez saisir un chiffre !");
+                isNumber = false;
+
+            }if(isNumber) {
+                this.solution = Integer.toString(combination).split("");
+                demandeSaisie = checkNumber(nbreChiffres, demandeSaisie, combination);
+            }
         }
-        this.solution = Integer.toString(combination).split("");
+    }
+
+    /**
+     * Int combination to String to get length
+     * Display error message if tailleNombre != nbChiffres
+     * @return true
+     */
+    private boolean checkNumber(int nbreChiffres, boolean demandeSaisie, Integer combination) {
+        int tailleNbre = combination.toString().length();
+        if (tailleNbre != nbreChiffres) {
+            System.out.println("Merci de ressaisir une combinaison de " + nbreChiffres);
+        } else if(tailleNbre == nbreChiffres) {
+            demandeSaisie = false;
+        }
+        return demandeSaisie;
     }
 
     /**
      *  Saisi de la proposition par le joueur
      *  La saisie devient la proposition
      *
-     * @throws GameException si les chiffres saisis sont supérieurs à 4
+     * @throws GameException si les chiffres saisis sont supérieurs ou inférieurs au nombre attendu
      */
-
     public void challenger() throws GameException  {
+        int nbreChiffres = parseInt(Config.getValue("nbreChiffres"));
         System.out.println("A vous de jouer !");
         System.out.println(this.numTry);
         Scanner reader = new Scanner(System.in);
-        int n = reader.nextInt();
-        prop = n;
-        if (n >= 10000) {
-            throw new GameException("Une combinaison à 4 chiffres est attendue");
+        prop = reader.nextInt();
+        if (prop != nbreChiffres){
+            throw new GameException("Une combinaison à " + nbreChiffres + " chiffres est attendue");
         }
-        this.proposition = Integer.toString(n).split("");
+        this.proposition = Integer.toString(prop).split("");
     }
 
     /**
      *  Génération de la proposition de l'AI via la méthode ThreadLocalRandom
      *  La combinaison générée devient la proposition
-     *
-     * @throws GameException si les chiffres saisis sont supérieurs à 4
      */
+    //Find a way to generate the correct amount of numbers expected
     public void defender() {
         prop = ThreadLocalRandom.current().nextInt(1000, 9000);
         String prop_ = Integer.toString(prop);
@@ -210,6 +226,7 @@ abstract class Game {
     public int getProp() {
         return prop;
     }
+    public int getGameChoice() {return gameChoice;}
 
     public int getMode() {
         return mode;
@@ -220,18 +237,19 @@ abstract class Game {
     }
 
     /**
-     * Retourne vrai ou faux selon la valeur de la variable numTry
+     * Retourne VRAI ou FAUX selon la valeur de la variable numTry
      *
-     * @return vrai si numTry est inférieur à MAX_NUM_TRY, sinon retourne faux
+     * @return vrai si numTry < MAX_NUM_TRY, sinon retourne faux
      */
+    // à vérifier !
     private boolean checkNumTry() {
-        return this.numTry < MAX_NUM_TRY ? true : false;
+        return this.numTry < parseInt(Config.getValue("nbreChiffres"))? true : false;
     }
 
     /**
      * Retourne vrai ou faux selon les valeurs des méthodes CheckNumTry et isResolved
      *
-     * @return vrai si CheckNumTry vaut "Vrai" et isResolved vaut faux, sinon retourne faux
+     * @return VRAI si CheckNumTry == VRAI et isResolved == faux, sinon retourne FAUX
      */
     private boolean isRunning() {
         return checkNumTry() && !isResolved();

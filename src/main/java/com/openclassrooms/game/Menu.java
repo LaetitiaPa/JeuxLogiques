@@ -3,6 +3,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Scanner;
 
+
 /**
  * La classe Menu définit la structure des différents menus présent dans le programme
  * Elle est également le point d'entrée et permet de lancer une partie à partir de la méthode display()
@@ -70,7 +71,6 @@ public class Menu {
         System.out.println(" 3- Quitter");
 
         gameChoice = input.nextInt();
-
     }
 
     /**
@@ -84,13 +84,12 @@ public class Menu {
      */
     private static void askMode() {
         Scanner input = new Scanner(System.in);
-        System.out.println("Veuillez choisir un mode: ");
+        System.out.println("Veuillez choisir un mode/ ");
         System.out.println("1- Challenger");
         System.out.println("2- Défenseur");
         System.out.println("3- Duel");
 
         modeChoice = input.nextInt();
-
     }
 
     /**

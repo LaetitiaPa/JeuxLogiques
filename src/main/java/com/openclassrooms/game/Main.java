@@ -1,5 +1,4 @@
 package com.openclassrooms.game;
-import java.util.Scanner;
 import java.util.logging.Logger;
 
 public class Main {

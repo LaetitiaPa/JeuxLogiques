@@ -16,7 +16,7 @@ public class Config {
     private static Properties props;
 
     /**
-     * Lit les éléments contenus dans le fichier config.properties
+     * Lit le fichier et charge les éléments contenus dans le fichier config.properties
      *
      */
     private static void loadProps() {

@@ -4,6 +4,9 @@ public class GameException extends Exception {
         super(errorMessage);
     }
 
+    /**
+     * Utilisation côté utilisateur, affiche seulement le message d'erreur.
+     */
     @Override
     public String toString() {
         super.toString();

@@ -35,14 +35,14 @@ public class MoreLess extends Game {
      * Retourne vrai ou faux selon la comparaison obtenue entre les méthodes getProp() contenant la propositon du joueur
      * et la méthode getCombination() contenant la solution
      *
-     * @return vrai si la valeur de getProp() est égal à la valeur de getCombination(), sinon retourne faux
+     * @return VRAI si la valeur de getProp() est égal à la valeur de getCombination(), sinon retourne FAUX
      */
     public Boolean isResolved() {
         return getProp() == getCombination() ? true : false;
     }
 
     public void displayResponse() {
-        System.out.println("Proposition: " +this.getProp()+ " -> Réponse : "+this.response);
+        System.out.println("Proposition: " +this.getProp()+ " -> Réponse : " +this.response);
     }
 
 }

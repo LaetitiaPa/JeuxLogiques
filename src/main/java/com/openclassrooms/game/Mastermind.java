@@ -1,7 +1,8 @@
 package com.openclassrooms.game;
+import com.sun.scenario.effect.impl.sw.sse.SSEBlend_SRC_OUTPeer;
+
 import java.util.Arrays;
 import java.util.List;
-import java.util.Scanner;
 
 
 /**
@@ -21,30 +22,48 @@ import java.util.Scanner;
 public class Mastermind extends Game {
     private int present;
     private int wellPlaced;
+    private String[] prop;
 
     public Mastermind(int mode, int gameChoice) {
         super(mode, gameChoice);
     }
 
     /**
-     * Vérification des entrées du tableau proposition avec celui du tableau solution
+     * Vérification des entrées du tableau proposition avec ceux du tableau solution
      * Incrémenter la variable present lorsque l'élément est présent dans le tableau solution
      * Incrémenter la variable wellPlaced lorsque l'élément se trouve à la même position que dans le tableau solution
      *
      * Les variables present et wellPlaced sont instanciées selon les résultats
      */
     public void checkProposition() {
+
         // To be improved to avoid cast at each call
         List<String> propositionAsList = Arrays.asList(proposition);
+        //List<String> newProp = Arrays.asList(prop);
 
         this.present = 0;
         this.wellPlaced = 0;
 
-        for (int i = 0; i < this.solution.length; i++) {
-            if (proposition[i].equals(solution[i]))
-                wellPlaced++;
-            else if (propositionAsList.contains(solution[i]))
-                present++;
+        // Create the getGameChoice condition
+        if(getGameChoice() == 2) {
+
+            for (int i = 0; i < this.solution.length; i++) {
+                if (proposition[i].equals(solution[i])) {
+                    System.out.println("here");
+                    //newProp.set(i, proposition[i]);
+                    wellPlaced++;
+                } else if (propositionAsList.contains(solution[i])) {
+                    present++;
+                }
+            }
+            } else {
+                for (int i = 0; i < this.solution.length; i++) {
+                    if (proposition[i].equals(solution[i])) {
+                        wellPlaced++;
+                    } else if (propositionAsList.contains(solution[i])) {
+                        present++;
+                    }
+                }
         }
     }
 
