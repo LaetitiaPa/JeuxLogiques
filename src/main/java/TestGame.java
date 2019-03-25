@@ -1,5 +1,4 @@
 import com.openclassrooms.game.Config;
-import com.openclassrooms.game.GameException;
 
 import java.util.InputMismatchException;
 import java.util.Scanner;
@@ -16,7 +15,7 @@ public class TestGame {
         int nbreChiffres = Integer.parseInt(Config.getValue("nbreChiffres"));
         System.out.println("Veuillez saisir une combinaison de " + nbreChiffres + " chiffres ");
         boolean demandeSaisie = true;
-        boolean isANumber = true;
+        boolean isANumber;
 
         while (demandeSaisie) {
             Scanner scan = new Scanner(System.in);

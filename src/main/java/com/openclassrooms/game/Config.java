@@ -3,12 +3,17 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Properties;
-
+import org.apache.log4j.Logger;
 
 /**
  * La classe Config contient les éléments permettant la lecture et l'extraction du fichier config.properties
  */
 public class Config {
+
+    /**
+     * Création de l'instance Logger en utilisant la méthode getLogger()
+     */
+    private final static Logger log = Logger.getLogger(String.valueOf(Config.class));
 
     /**
      * Liste contenant les propriétés extraites du fichier config.properties

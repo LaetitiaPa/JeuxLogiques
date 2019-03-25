@@ -1,4 +1,6 @@
 package com.openclassrooms.game;
+import org.apache.log4j.Logger;
+
 import java.util.InputMismatchException;
 import java.util.Scanner;
 import java.util.concurrent.ThreadLocalRandom;
@@ -19,11 +21,15 @@ import static java.lang.Integer.parseInt;
  * </ul>
  * </p>
  */
-abstract class Game {
+  abstract class Game {
+
+    /**
+     * Création de l'instance Logger en utilisant la méthode getLogger()
+     */
+    private final static Logger log = Logger.getLogger(String.valueOf(Game.class));
 
     /**
      * Le choix du jeu. Peut être récupérée
-     * @see Game#getGameChoice()
      */
     protected int gameChoice;
 
@@ -91,11 +97,13 @@ abstract class Game {
      *</p>
      */
     public void run() {
-        if(getMode() == 1 || getMode() == 3) {
+        log.info("Début du jeu");
+        if(getMode() == 1) {
             generateChallengerCombination();
         }else if(getMode() == 2) {
             generateDefenderCombination();
         }if ("true".equals(Config.getValue("cheatmode"))) {
+            log.debug(getCombination());
             System.out.println(getCombination());
        }
         while (isRunning()) {
@@ -131,7 +139,7 @@ abstract class Game {
             } else {
                 System.out.println("Vous avez perdu !");
             }
-                Menu.displayEndMenu();
+        Menu.displayEndMenu();
     }
 
     /**
@@ -140,8 +148,7 @@ abstract class Game {
      * @return La combinaison générée par la méthode ThreadLocalRandom
      */
     public int generateChallengerCombination() {
-        int nbreChiffres = parseInt(Config.getValue("nbreChiffres"));
-        combination = ThreadLocalRandom.current().nextInt(nbreChiffres);
+        combination = ThreadLocalRandom.current().nextInt(1000, 9000);
         String solution_ = Integer.toString(combination);
         solution = solution_.split("");
 
@@ -226,7 +233,6 @@ abstract class Game {
     public int getProp() {
         return prop;
     }
-    public int getGameChoice() {return gameChoice;}
 
     public int getMode() {
         return mode;

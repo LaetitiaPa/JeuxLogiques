@@ -1,8 +1,10 @@
 package com.openclassrooms.game;
+import org.apache.log4j.Logger;
+
 import java.util.Arrays;
+import java.util.InputMismatchException;
 import java.util.List;
 import java.util.Scanner;
-
 
 /**
  * La classe Menu définit la structure des différents menus présent dans le programme
@@ -17,11 +19,40 @@ import java.util.Scanner;
  * </p>
  */
 public class Menu {
+
+    /**
+     * Création de l'instance Logger en utilisant la méthode getLogger()
+     */
+    private final static Logger log = Logger.getLogger(String.valueOf(Menu.class));
+
+    /**
+     *
+     */
     private static int endGameChoice;
-    private static int gameChoice;
+
+    /**
+     *
+     */
+    public static int gameChoice;
+
+    /**
+     *
+     */
     private static int modeChoice;
+
+    /**
+     *
+     */
     private static final List<Integer> gameChoices = Arrays.asList(1, 2);
+
+    /**
+     *
+     */
     private static final List<Integer> modeChoices = Arrays.asList(1, 2, 3);
+
+    /**
+     *
+     */
     private static final List<Integer> endGameChoices = Arrays.asList(1, 2, 3);
 
     /**
@@ -62,8 +93,10 @@ public class Menu {
      * 3/ Quitter
      *
      * Stock la saisie du joueur dans la variable gameChoice
+     * Affiche le choix
+     * @param
      */
-    private static void askGame() {
+    public static void askGame() {
         Scanner input = new Scanner(System.in);
         System.out.println("Veuillez choisir un jeu :");
         System.out.println(" 1- Plus ou Moins");
@@ -71,6 +104,17 @@ public class Menu {
         System.out.println(" 3- Quitter");
 
         gameChoice = input.nextInt();
+
+        switch(gameChoice) {
+            case 1:
+                System.out.println("Vous avez choisi comme jeu : Recherche +/-");
+
+            case 2:
+                System.out.println("Vous avez choisi comme jeu : Mastermind");
+
+            case 3:
+                System.out.println("Vous avez choisi de quitter le jeu");
+        }
     }
 
     /**
@@ -82,9 +126,9 @@ public class Menu {
      *
      * Stock la saisie du joueur dans la variable modeChoice
      */
-    private static void askMode() {
+    public static void askMode() {
         Scanner input = new Scanner(System.in);
-        System.out.println("Veuillez choisir un mode/ ");
+        System.out.println("Veuillez choisir un mode");
         System.out.println("1- Challenger");
         System.out.println("2- Défenseur");
         System.out.println("3- Duel");
@@ -118,6 +162,7 @@ public class Menu {
      * Utilise la méthode exit() afin d'interrompre le programme
      */
     private static void quit() {
+        log.info("Fin du jeu");
         System.out.println("Bye bye !");
         System.exit(0);
     }
@@ -131,13 +176,17 @@ public class Menu {
      *
      * Stock la saisie du joueur dans la variable endGameChoice
      */
-    public static void endGameMenu(){
+    public static void endGameMenu() {
         Scanner input = new Scanner(System.in);
         System.out.println(" 1- Rejouer");
         System.out.println(" 2- Changer de jeu");
         System.out.println(" 3- Quitter");
 
-        endGameChoice = input.nextInt();
+        try {
+            endGameChoice = input.nextInt();
+        } catch(InputMismatchException inputException) {
+            System.out.println("Veuillez saisir un chiffre !");
+        }
         endChoiceMenu();
     }
 
@@ -148,6 +197,7 @@ public class Menu {
         if(endGameChoice == 1) {
             runGame();
         } else if(endGameChoice == 2) {
+            askGame();
             askMode();
             runGame();
         } else if(endGameChoice == 3) {

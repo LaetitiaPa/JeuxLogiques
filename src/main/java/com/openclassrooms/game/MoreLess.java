@@ -1,5 +1,5 @@
 package com.openclassrooms.game;
-
+import org.apache.log4j.Logger;
 
 /**
  * La classe MoreLess contient toutes les caractéristiques propres au jeu de recherche +/-
@@ -10,6 +10,12 @@ package com.openclassrooms.game;
  */
 
 public class MoreLess extends Game {
+
+    /**
+     * Création de l'instance Logger en utilisant la méthode getLogger()
+     */
+    private final static Logger log = Logger.getLogger(String.valueOf(MoreLess.class));
+
     public MoreLess(int modeChoice, int gameChoice) {
         super(modeChoice, gameChoice);
     }
