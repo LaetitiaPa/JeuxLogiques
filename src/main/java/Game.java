@@ -1,4 +1,5 @@
 package com.openclassrooms.game;
+
 import org.apache.log4j.Logger;
 
 import java.util.InputMismatchException;
@@ -100,45 +101,37 @@ import static java.lang.Integer.parseInt;
         log.info("Début du jeu");
         if(getMode() == 1) {
             generateChallengerCombination();
-        }else if(getMode() == 2) {
+        } else if(getMode() == 2) {
             generateDefenderCombination();
-        }if ("true".equals(Config.getValue("cheatmode"))) {
+        }
+        if ("true".equals(Config.getValue("cheatmode"))) {
             log.debug(getCombination());
             System.out.println(getCombination());
        }
         while (isRunning()) {
             this.response = "";
 
-            if(this.getMode() == 1) {
+            if (this.getMode() == 1) {
                 try {
                     challenger();
                 } catch (GameException e) {
                     System.out.println(e.toString());
                     continue;
                 }
-            } else if(this.getMode() == 2) {
+            } else if (this.getMode() == 2) {
                 defender();
-
-            } else if(this.getMode() == 3) {
-                defender();
-                checkProposition();
-                displayResponse();
-                this.numTry++;
-                try {
-                    challenger();
-                } catch (GameException e) {
-                    e.printStackTrace();
-                }
             }
-                checkProposition();
-                displayResponse();
-                this.numTry++;
+            checkProposition();
+            displayResponse();
+            this.numTry++;
         }
-            if(isResolved()) {
-                System.out.println("Vous avez gagné !");
-            } else {
-                System.out.println("Vous avez perdu !");
-            }
+
+        if (isResolved()) {
+            System.out.println("Vous avez gagné !");
+        } else {
+            System.out.println("Vous avez perdu !");
+        }
+
         Menu.displayEndMenu();
     }
 
@@ -177,7 +170,9 @@ import static java.lang.Integer.parseInt;
                 System.out.println("Veuillez saisir un chiffre !");
                 isNumber = false;
 
-            }if(isNumber) {
+            }
+
+            if (isNumber) {
                 this.solution = Integer.toString(combination).split("");
                 demandeSaisie = checkNumber(nbreChiffres, demandeSaisie, combination);
             }
@@ -210,7 +205,12 @@ import static java.lang.Integer.parseInt;
         System.out.println("A vous de jouer !");
         System.out.println(this.numTry);
         Scanner reader = new Scanner(System.in);
-        prop = reader.nextInt();
+        try {
+            prop = reader.nextInt();
+        }
+        catch(InputMismatchException inputException){
+            System.out.println("Veuillez saisir un chiffre !");
+        }
         if (prop != nbreChiffres){
             throw new GameException("Une combinaison à " + nbreChiffres + " chiffres est attendue");
         }
@@ -228,6 +228,12 @@ import static java.lang.Integer.parseInt;
         proposition = prop_.split("");
         System.out.println(prop);
     }
+
+    /*public int defender(int n) {
+        System.out.println(n);
+        int m = (int) Math.pow(10, n - 1);
+        return m + new Random().nextInt(9 * m);
+    }*/
 
 
     public int getProp() {

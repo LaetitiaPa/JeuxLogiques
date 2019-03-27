@@ -2,7 +2,6 @@ package com.openclassrooms.game;
 import java.util.logging.Logger;
 
 public class Main {
-
     /**
      * Création de l'instance Logger en utilisant la méthode getLogger()
      */

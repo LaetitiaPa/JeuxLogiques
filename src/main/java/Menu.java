@@ -43,7 +43,7 @@ public class Menu {
     /**
      *
      */
-    private static final List<Integer> gameChoices = Arrays.asList(1, 2);
+    private static final List<Integer> gameChoices = Arrays.asList(1, 2, 3);
 
     /**
      *
@@ -68,11 +68,13 @@ public class Menu {
         while (!gameChoices.contains(gameChoice)) {
             askGame();
         }
-
+        if (gameChoice == 3) {
+            quit();
+        }
         while (!modeChoices.contains(modeChoice)){
             askMode();
         }
-            runGame();
+        runGame();
     }
 
     /**
@@ -93,8 +95,8 @@ public class Menu {
      * 3/ Quitter
      *
      * Stock la saisie du joueur dans la variable gameChoice
+     *
      * Affiche le choix
-     * @param
      */
     public static void askGame() {
         Scanner input = new Scanner(System.in);
@@ -103,17 +105,23 @@ public class Menu {
         System.out.println(" 2- Mastermind");
         System.out.println(" 3- Quitter");
 
-        gameChoice = input.nextInt();
+        try {
+            gameChoice = input.nextInt();
+        }
+        catch(InputMismatchException inputException) {
+            System.out.println("Veuillez saisir un chiffre ! ");
+        }
 
         switch(gameChoice) {
             case 1:
                 System.out.println("Vous avez choisi comme jeu : Recherche +/-");
+                break;
 
-            case 2:
-                System.out.println("Vous avez choisi comme jeu : Mastermind");
+            case 2: System.out.println("Vous avez choisi comme jeu : Mastermind");
+                break;
 
-            case 3:
-                System.out.println("Vous avez choisi de quitter le jeu");
+            case 3: System.out.println("Vous avez choisi de quitter le jeu");
+                break;
         }
     }
 
@@ -133,7 +141,12 @@ public class Menu {
         System.out.println("2- Défenseur");
         System.out.println("3- Duel");
 
-        modeChoice = input.nextInt();
+        try {
+            modeChoice = input.nextInt();
+        }
+        catch(InputMismatchException inputException) {
+            System.out.println("Veuillez saisir un chiffre ! ");
+        }
     }
 
     /**
@@ -148,12 +161,10 @@ public class Menu {
         if (gameChoice == 1) {
             MoreLess moreLess = new MoreLess(modeChoice, gameChoice);
             moreLess.run();
-
         } else if (gameChoice == 2) {
             Mastermind mastermind = new Mastermind(modeChoice, gameChoice);
             mastermind.run();
-
-        } else if(gameChoice == 3) {
+        } else if (gameChoice == 3) {
             quit();
         }
     }
@@ -201,7 +212,7 @@ public class Menu {
             askMode();
             runGame();
         } else if(endGameChoice == 3) {
-            System.exit(0);
+            quit();
         }
     }
 }

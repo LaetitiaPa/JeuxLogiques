@@ -1,8 +1,8 @@
 package com.openclassrooms.game;
+
 import org.apache.log4j.Logger;
 import java.util.Arrays;
 import java.util.List;
-
 
 /**
  * La classe Mastermind contient toutes les caractéristiques du jeu Mastermind
@@ -91,6 +91,3 @@ public class Mastermind extends Game {
         }
     }
 }
-
-
-
