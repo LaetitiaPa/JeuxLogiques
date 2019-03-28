@@ -53,7 +53,7 @@ Le défenseur indique pour chaque proposition le nombre de chiffre/couleur de la
 L'attaquant doit deviner la combinaison secrète en un nombre limité d'essais.
 
 
-# Lancement du jessssu
+# Lancement du jeu
 
 ** Aller dans le 'target':
 cd  target
@@ -61,7 +61,7 @@ cd  target
 ** Lancer l'exécution
 java -jar  game.jar
 
-Ou 
+ou 
 
 Exécuter le fichier game.bat se trouvant dans le dossier target.
 
