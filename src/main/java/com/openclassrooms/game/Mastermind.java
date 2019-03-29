@@ -79,15 +79,15 @@ public class Mastermind extends Game {
      */
     public void displayResponse() {
         if (present == 0 && wellPlaced == 1) {
-            System.out.println("Proposition : " + this.getProp() + " RÃ©ponse => " + wellPlaced + " bien placÃ©");
+            System.out.println("Proposition : " + this.getProp() + " Réponse => " + wellPlaced + " bien placé");
         } else if (present == 0 && wellPlaced <= 3) {
-            System.out.println("Proposition : " + this.getProp() + " RÃ©ponse => " + wellPlaced + " bien placÃ©s");
+            System.out.println("Proposition : " + this.getProp() + " Réponse => " + wellPlaced + " bien placés");
         } else if (present == 1 && wellPlaced <= 3) {
-            System.out.println("Proposition : " + this.getProp() + " RÃ©ponse => " + present + " prÃ©sent," + wellPlaced + " bien placÃ©s");
+            System.out.println("Proposition : " + this.getProp() + " Réponse => " + present + " présent," + wellPlaced + " bien placÃ©s");
         } else if (present <= 3 && wellPlaced <= 3) {
-            System.out.println("Proposition : " + this.getProp() + " RÃ©ponse => " + present + " prÃ©sents, " + wellPlaced + " bien placÃ©s");
+            System.out.println("Proposition : " + this.getProp() + " Réponse => " + present + " présents, " + wellPlaced + " bien placÃ©s");
         } else if (present > 1 && wellPlaced == 0) {
-            System.out.println("Proposition : " + this.getProp() + " RÃ©ponse => " + present + " prÃ©sents");
+            System.out.println("Proposition : " + this.getProp() + " Réponse => " + present + " présents");
         }
     }
 }

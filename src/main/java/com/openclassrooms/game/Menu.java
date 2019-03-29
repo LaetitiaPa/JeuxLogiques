@@ -43,7 +43,7 @@ public class Menu {
     /**
      *
      */
-    private static final List<Integer> gameChoices = Arrays.asList(1, 2);
+    private static final List<Integer> gameChoices = Arrays.asList(1, 2, 3);
 
     /**
      *
@@ -103,17 +103,24 @@ public class Menu {
         System.out.println(" 2- Mastermind");
         System.out.println(" 3- Quitter");
 
-        gameChoice = input.nextInt();
+        try {
+        	gameChoice = input.nextInt();
+        } catch(InputMismatchException inputException) {
+            System.out.println("Veuillez saisir un chiffre !");
+        }
 
         switch(gameChoice) {
             case 1:
                 System.out.println("Vous avez choisi comme jeu : Recherche +/-");
+                break;
 
             case 2:
                 System.out.println("Vous avez choisi comme jeu : Mastermind");
+                break;
 
             case 3:
                 System.out.println("Vous avez choisi de quitter le jeu");
+                break;
         }
     }
 
@@ -130,10 +137,14 @@ public class Menu {
         Scanner input = new Scanner(System.in);
         System.out.println("Veuillez choisir un mode");
         System.out.println("1- Challenger");
-        System.out.println("2- DÃ©fenseur");
+        System.out.println("2- Défenseur");
         System.out.println("3- Duel");
-
-        modeChoice = input.nextInt();
+        
+        try {
+            modeChoice = input.nextInt();
+        } catch(InputMismatchException inputException) {
+            System.out.println("Veuillez saisir un chiffre !");
+        }
     }
 
     /**

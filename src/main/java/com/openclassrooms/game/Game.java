@@ -2,6 +2,7 @@ package com.openclassrooms.game;
 import org.apache.log4j.Logger;
 
 import java.util.InputMismatchException;
+import java.util.Random;
 import java.util.Scanner;
 import java.util.concurrent.ThreadLocalRandom;
 
@@ -88,18 +89,22 @@ import static java.lang.Integer.parseInt;
         this.gameChoice = gameChoice;
     }
 
-    /**
+    public Game() {
+		super();
+	}
+
+	/**
      *<p>
-     *  Affiche le jeu séléctionné selon le mode choisi
+     *  Affiche le jeu s�lectionn� selon le mode choisi
      *  Gère les conditions de sorties du jeu
      *  Affiche le message de fin de partie
      *  Affiche le menu de fin
      *</p>
      */
     public void run() {
-        log.info("Début du jeu");
+        log.info("D�but du jeu");
         if(getMode() == 1) {
-            generateChallengerCombination();
+        	generateChallengerCombination();
         }else if(getMode() == 2) {
             generateDefenderCombination();
         }if ("true".equals(Config.getValue("cheatmode"))) {
@@ -117,7 +122,7 @@ import static java.lang.Integer.parseInt;
                     continue;
                 }
             } else if(this.getMode() == 2) {
-                defender();
+            	defender();
 
             } else if(this.getMode() == 3) {
                 defender();
@@ -143,17 +148,21 @@ import static java.lang.Integer.parseInt;
     }
 
     /**
-     * Retourne la combination générée
+     * Retourne la combination g�n�r�e
      *
-     * @return La combinaison générée par la méthode ThreadLocalRandom
+     * @return La combinaison g�n�r�e par la m�thode ThreadLocalRandom
      */
     public int generateChallengerCombination() {
-        combination = ThreadLocalRandom.current().nextInt(1000, 9000);
+    	int digits = parseInt(Config.getValue("nbreChiffres"));
+    	int minimum = (int) Math.pow(10, digits - 1); // minimum value with 2 digits is 10 (10^1)
+        int maximum = (int) Math.pow(10, digits) - 1; // maximum value with 2 digits is 99 (10^2 - 1)
+        Random random = new Random();
+        combination = minimum + random.nextInt((maximum - minimum) + 1);
         String solution_ = Integer.toString(combination);
         solution = solution_.split("");
 
         return combination;
-    }
+}
 
     /**
      *  Saisi de la combinaison secrète par le joueur
@@ -211,24 +220,28 @@ import static java.lang.Integer.parseInt;
         System.out.println(this.numTry);
         Scanner reader = new Scanner(System.in);
         prop = reader.nextInt();
-        if (prop != nbreChiffres){
+        int tailleNbre = Integer.toString(prop).length();
+        if ( nbreChiffres!= tailleNbre){
             throw new GameException("Une combinaison à " + nbreChiffres + " chiffres est attendue");
         }
         this.proposition = Integer.toString(prop).split("");
+        System.out.println(prop);
     }
 
     /**
      *  Génération de la proposition de l'AI via la méthode ThreadLocalRandom
      *  La combinaison générée devient la proposition
      */
-    //Find a way to generate the correct amount of numbers expected
     public void defender() {
-        prop = ThreadLocalRandom.current().nextInt(1000, 9000);
+    	int digits = parseInt(Config.getValue("nbreChiffres"));
+    	int minimum = (int) Math.pow(10, digits - 1); // minimum value with 2 digits is 10 (10^1)
+        int maximum = (int) Math.pow(10, digits) - 1; // maximum value with 2 digits is 99 (10^2 - 1)
+        Random random = new Random();
+        prop = minimum + random.nextInt((maximum - minimum) + 1);
         String prop_ = Integer.toString(prop);
         proposition = prop_.split("");
         System.out.println(prop);
     }
-
 
     public int getProp() {
         return prop;

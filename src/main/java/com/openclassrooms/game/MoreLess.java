@@ -20,7 +20,11 @@ public class MoreLess extends Game {
         super(modeChoice, gameChoice);
     }
 
-    /**
+    public MoreLess() {
+		super();
+	}
+
+	/**
      * Vérification des entrées du tableau proposition avec celui du tableau solution
      *
      * Les variables present et wellPlaced sont instanciées selon les résultats
@@ -48,7 +52,7 @@ public class MoreLess extends Game {
     }
 
     public void displayResponse() {
-        System.out.println("Proposition: " +this.getProp()+ " -> Réponse : " +this.response);
+        System.out.println("Proposition: " +this.getProp()+ " -> R�ponse : " +this.response);
     }
 
 }
