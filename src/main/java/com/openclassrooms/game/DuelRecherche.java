@@ -23,23 +23,21 @@ public class DuelRecherche {
 			if ("true".equals(Config.getValue("cheatmode"))) {
 	            System.out.println(gameDuel.getCombination());
 	       }
-			
 			if(playerResponse == 0) {
 				try {
 					gameDuel.challenger();
 					playerResponse = 1;
-				} catch (GameException e) {
+				}catch (GameException e) {
 					e.printStackTrace();
+					}
 				}
-				if(playerResponse == 1) {
+				else if(playerResponse == 1) {
 					gameDuel.defender();
-					playerResponse = 0;
+					playerResponse = 0;	
 				}
 				compteur = compteur + 1;
 				System.out.println(compteur);
-			}
 		}
-		
 		if(nbrePointsJoueur > nbrePointsIA) {
 			System.out.println("Vous avez gagné contre l'ordinateur");
 		}
@@ -49,7 +47,5 @@ public class DuelRecherche {
 		else {
 			System.out.println("Egalité, pas de vainqueur");
 		}
-		
 	}
-	
 }
