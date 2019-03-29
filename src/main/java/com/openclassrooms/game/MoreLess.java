@@ -30,15 +30,16 @@ public class MoreLess extends Game {
      * Les variables present et wellPlaced sont instanci√©es selon les r√©sultats
      */
     public void checkProposition() {
+    	this.response = "";
         for (int i = 0; i < this.solution.length; i++) {
-                if (this.proposition[i].equals(this.solution[i])) {
-                    response += "=";
-                } else if (Integer.parseInt(this.proposition[i]) > Integer.parseInt(this.solution[i])) {
-                    this.response += "-";
-                } else if (Integer.parseInt(this.proposition[i]) < Integer.parseInt(this.solution[i])) {
-                    this.response += "+";
-                }
+            if (this.proposition[i].equals(this.solution[i])) {
+                this.response += "=";            
+            } else if (Integer.parseInt(this.proposition[i]) > Integer.parseInt(this.solution[i])) {
+                this.response += "-";
+            } else if (Integer.parseInt(this.proposition[i]) < Integer.parseInt(this.solution[i])) {
+                this.response += "+";
             }
+        }
     }
 
     /**
@@ -52,7 +53,7 @@ public class MoreLess extends Game {
     }
 
     public void displayResponse() {
-        System.out.println("Proposition: " +this.getProp()+ " -> RÈponse : " +this.response);
+        System.out.println("Proposition: " + this.getProp() + " -> RÈponse : " + this.response);
     }
 
 }

@@ -16,36 +16,41 @@ public class DuelRecherche {
 		int compteur = 1;
 		int nbrePointsJoueur = 2;
 		int nbrePointsIA = 2;
-		int playerResponse = 0; // Joueur == 0 : humain / joueur == 1 : ordinateur 
+		int playerResponse = 0; // Joueur == 0 : humain / joueur == 1 : ordinateur
 		
 		gameDuel.generateChallengerCombination();		
-		while(compteur < nbEssai) {
+		while (compteur < nbEssai) {
+			
 			if ("true".equals(Config.getValue("cheatmode"))) {
 	            System.out.println(gameDuel.getCombination());
-	       }
-			if(playerResponse == 0) {
+			}
+			
+            if (playerResponse == 0) {
 				try {
 					gameDuel.challenger();
+					gameDuel.checkProposition();
+					gameDuel.displayResponse();
 					playerResponse = 1;
-				}catch (GameException e) {
+				} catch (GameException e) {
 					e.printStackTrace();
-					}
 				}
-				else if(playerResponse == 1) {
-					gameDuel.defender();
-					playerResponse = 0;	
-				}
-				compteur = compteur + 1;
-				System.out.println(compteur);
-		}
-		if(nbrePointsJoueur > nbrePointsIA) {
-			System.out.println("Vous avez gagné contre l'ordinateur");
-		}
-		else if(nbrePointsIA > nbrePointsJoueur) {
-			System.out.println("Vous avez perdu contre l'ordinateur");
-		}
-		else {
-			System.out.println("Egalité, pas de vainqueur");
-		}
-	}
+			} else if (playerResponse == 1) {
+				gameDuel.defender();
+				playerResponse = 0;	
+			}
+            
+			compteur += 1;
+			Debug.print("Compteur : " + compteur);
+			
+			if (nbrePointsJoueur > nbrePointsIA) {
+				System.out.println("Vous avez gagné contre l'ordinateur");
+			} else if (nbrePointsIA > nbrePointsJoueur) {
+				System.out.println("Vous avez perdu contre l'ordinateur");
+			} else {
+				System.out.println("Egalité, pas de vainqueur");
+			}
+		}	
+	}      
+
 }
+
