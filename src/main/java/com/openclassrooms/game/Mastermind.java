@@ -5,13 +5,13 @@ import java.util.List;
 
 
 /**
- * La classe Mastermind contient toutes les caractÃ©ristiques du jeu Mastermind
- * Elle hÃ©rite de la classe Game
+ * La classe Mastermind contient toutes les caractéristiques du jeu Mastermind
+ * Elle hérite de la classe Game
  * <p>
- * Le Mastermind se caractÃ©rise par les informations suivantes :
+ * Le Mastermind se caractérise par les informations suivantes :
  * <ul>
- * <li>Un ou une combinaison de chiffres bien placÃ©s</li>
- * <li>Un ou une combinaison de chiffres prÃ©sents</li>
+ * <li>Un ou une combinaison de chiffres bien placés</li>
+ * <li>Un ou une combinaison de chiffres présents</li>
  * </ul>
  *
  * @see Game#mode
@@ -21,7 +21,7 @@ import java.util.List;
 public class Mastermind extends Game {
 
     /**
-     * CrÃ©ation de l'instance Logger en utilisant la mÃ©thode getLogger()
+     * Création de l'instance Logger en utilisant la méthode getLogger()
      */
     private final static Logger log = Logger.getLogger(String.valueOf(Mastermind.class));
 
@@ -40,14 +40,14 @@ public class Mastermind extends Game {
     }
 
     /**
-     * VÃ©rification des entrÃ©es du tableau proposition avec ceux du tableau solution
-     * IncrÃ©menter la variable present lorsque l'Ã©lÃ©ment est prÃ©sent dans le tableau solution
-     * IncrÃ©menter la variable wellPlaced lorsque l'Ã©lÃ©ment se trouve Ã  la mÃªme position que dans le tableau solution
+     * Vérification des entrées du tableau proposition avec ceux du tableau solution
+     * Incrémenter la variable present lorsque l'élément est présent dans le tableau solution
+     * Incrémenter la variable wellPlaced lorsque l'élément se trouve Ã  la même position que dans le tableau solution
      *
-     * Les variables present et wellPlaced sont instanciÃ©es selon les rÃ©sultats
+     * Les variables present et wellPlaced sont instanciées selon les résultats
      */
     public void checkProposition() {
-        log.trace("Utilisation de la mÃ©thode checkProposition");
+        log.trace("Utilisation de la méthode checkProposition");
         // To be improved to avoid cast at each call
         List<String> propositionAsList = Arrays.asList(proposition);
         this.present = 0;
@@ -66,15 +66,15 @@ public class Mastermind extends Game {
     /**
      * Retourne vrai ou faux selon la valeur de la variable wellPlaced
      *
-     * @return vrai si wellPlaced est Ã©gal Ã  4, sinon retourne faux
+     * @return vrai si wellPlaced est égal à 4, sinon retourne faux
      */
     public Boolean isResolved() {
         return wellPlaced == 4 ? true : false;
     }
 
     /**
-     * GÃ©nÃ©re la rÃ©ponse affichÃ©e selon le contenu des variables present et wellPlaced
-     * afin de pouvoir gÃ©rer les phrases au singulier ou au pluriel
+     * Génére la réponse affichée selon le contenu des variables present et wellPlaced
+     * afin de pouvoir gérer les phrases au singulier ou au pluriel
      *
      */
     public void displayResponse() {
@@ -83,9 +83,9 @@ public class Mastermind extends Game {
         } else if (present == 0 && wellPlaced <= 3) {
             System.out.println("Proposition : " + this.getProp() + " Réponse => " + wellPlaced + " bien placés");
         } else if (present == 1 && wellPlaced <= 3) {
-            System.out.println("Proposition : " + this.getProp() + " Réponse => " + present + " présent," + wellPlaced + " bien placÃ©s");
+            System.out.println("Proposition : " + this.getProp() + " Réponse => " + present + " présent," + wellPlaced + " bien placés");
         } else if (present <= 3 && wellPlaced <= 3) {
-            System.out.println("Proposition : " + this.getProp() + " Réponse => " + present + " présents, " + wellPlaced + " bien placÃ©s");
+            System.out.println("Proposition : " + this.getProp() + " Réponse => " + present + " présents, " + wellPlaced + " bien placés");
         } else if (present > 1 && wellPlaced == 0) {
             System.out.println("Proposition : " + this.getProp() + " Réponse => " + present + " présents");
         }

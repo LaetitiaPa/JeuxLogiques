@@ -7,10 +7,10 @@ import java.util.List;
 import java.util.Scanner;
 
 /**
- * La classe Menu dÃ©finit la structure des diffÃ©rents menus prÃ©sent dans le programme
- * Elle est Ã©galement le point d'entrÃ©e et permet de lancer une partie Ã  partir de la mÃ©thode display()
+ * La classe Menu définit la structure des différents menus présent dans le programme
+ * Elle est également le point d'entrée et permet de lancer une partie Ã  partir de la méthode display()
  * <p>
- * La classe Menu est caractÃ©risÃ©e par les informations suivantes :
+ * La classe Menu est caractérisée par les informations suivantes :
  * <ul>
  * <li>Un choix de jeu</li>
  * <li>Un choix de mode</li>
@@ -21,7 +21,7 @@ import java.util.Scanner;
 public class Menu {
 
     /**
-     * CrÃ©ation de l'instance Logger en utilisant la mÃ©thode getLogger()
+     * Création de l'instance Logger en utilisant la méthode getLogger()
      */
     private final static Logger log = Logger.getLogger(String.valueOf(Menu.class));
 
@@ -61,7 +61,7 @@ public class Menu {
      *
      * TANT QUE la valeur saisie n'est pas dans la liste, on affiche le menu correspondant
      *
-     * Enfin on appelle la mÃ©thode runGame() qui instancie le jeu choisi
+     * Enfin on appelle la méthode runGame() qui instancie le jeu choisi
      *
      */
     public static void display() {
@@ -86,7 +86,7 @@ public class Menu {
     }
 
     /**
-     * Menu des jeux proposant les possibilitÃ©s suivantes:
+     * Menu des jeux proposant les possibilités suivantes:
      *
      * 1/ Plus ou Moins
      * 2/ Mastermind
@@ -125,10 +125,10 @@ public class Menu {
     }
 
     /**
-     * Menu des modes proposant les possibilitÃ©s suivantes:
+     * Menu des modes proposant les possibilités suivantes:
      *
      * 1/ Challenger
-     * 2/ DÃ©fenseur
+     * 2/ Défenseur
      * 3/ Duel
      *
      * Stock la saisie du joueur dans la variable modeChoice
@@ -148,12 +148,12 @@ public class Menu {
     }
 
     /**
-     * Instancie le jeu choisi Ã  partir de la classe du jeu
-     * Lance la partie en utilisant la mÃ©thode run() de la classe Game
+     * Instancie le jeu choisi à partir de la classe du jeu
+     * Lance la partie en utilisant la méthode run() de la classe Game
      *
      * 1/ Instancie la classe MoreLess
      * 2/ Instancie la classe Mastermind
-     * 3/ La mÃ©thode quit() est exÃ©cutÃ©e
+     * 3/ La méthode quit() est exécutée
      */
     private static void runGame() {
         if (gameChoice == 1) {
@@ -170,7 +170,7 @@ public class Menu {
     }
 
     /**
-     * Utilise la mÃ©thode exit() afin d'interrompre le programme
+     * Utilise la méthode exit() afin d'interrompre le programme
      */
     private static void quit() {
         log.info("Fin du jeu");
@@ -202,7 +202,7 @@ public class Menu {
     }
 
     /**
-     * Lance les mÃ©thodes correspondant au choix saisi dans la mÃ©thode endGameMenu()
+     * Lance les méthodes correspondant au choix saisi dans la méthode endGameMenu()
      */
     public static void endChoiceMenu() {
         if(endGameChoice == 1) {

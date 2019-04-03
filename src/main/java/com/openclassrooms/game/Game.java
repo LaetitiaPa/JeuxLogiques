@@ -9,13 +9,13 @@ import java.util.concurrent.ThreadLocalRandom;
 import static java.lang.Integer.parseInt;
 
 /**
- * La classe Game contient toutes les caractÃ©ristiques d'un jeu
+ * La classe Game contient toutes les caractéristiques d'un jeu
  * <p>
- * un jeu se caractÃ©rise par les informations suivantes :
+ * un jeu se caractérise par les informations suivantes :
  * <ul>
- * <li>Une combinaison secrÃ¨te.</li>
- * <li>Une proposition entrÃ©e par l'adversaire.</li>
- * <li>Une rÃ©ponse affichÃ©e.</li>
+ * <li>Une combinaison secrète.</li>
+ * <li>Une proposition entrée par l'adversaire.</li>
+ * <li>Une réponse affichée.</li>
  * <li>Un nombre d'essai.</li>
  * <li>Un choix du jeu</li>
  * <li>Un choix du mode</li>
@@ -25,23 +25,36 @@ import static java.lang.Integer.parseInt;
   abstract class Game {
 
     /**
-     * CrÃ©ation de l'instance Logger en utilisant la mÃ©thode getLogger()
+     * Création de l'instance Logger en utilisant la méthode getLogger()
      */
     private final static Logger log = Logger.getLogger(String.valueOf(Game.class));
 
     /**
-     * Le choix du jeu. Peut Ãªtre rÃ©cupÃ©rÃ©e
+     * Le choix du jeu. Peut être réupéré
      */
     protected int gameChoice;
-
+    
     /**
-     * La combinaison secrÃ¨te: Peut Ãªtre rÃ©cupÃ©rÃ©e
+     * La combinaison secrète pour les modes challenger et defender
      * @see Game#getCombination()
      */
     protected int combination = 0;
+    
 
     /**
-     * La valeur de la proposition: Peut Ãªtre rÃ©cupÃ©rÃ©e
+     * La combinaison secrète de l'AI pour le mode Duel: Peut être récupérée
+     * @see Game#getDuelCombinationAI()
+     */
+    protected int duelCombinationAI = 0;
+    
+    /**
+     * La combinaison secrète du joueur pour le mode Duel: Peut être récupérée
+     * @see Game#getDuelCombinationPlayer()
+     */
+    protected int duelCombinationPlayer = 0;
+
+    /**
+     * La valeur de la proposition: Peut être récupérée
      * @see Game#getProp()
      */
     protected  int prop;
@@ -54,12 +67,34 @@ import static java.lang.Integer.parseInt;
     /**
      * Tableau contenant la solution du jeu
      */
+    
     protected String[] solution;
+    
+    /**
+     * Tableau contenant la solution du jeu pour le mode Duel / Player
+     */
+    
+    protected String[] solutionPlayer;
+    
+    /**
+     * Tableau contenant la solution du jeu pour le mode Duel / AI
+     */
+    protected String[] solutionAI;
 
     /**
-     * valeur de la rÃ©ponse retournÃ©e
+     * valeur de la réponse retournée
      */
     protected String response;
+    
+   /**
+    *  valeur de la réponse du joueur
+    */
+   protected String playerResponse;
+   
+   /**
+    *  valeur de la réponse de l'AI 
+    */
+   protected String aiResponse;
 
     /**
      * valeur du nombre de tours
@@ -67,7 +102,7 @@ import static java.lang.Integer.parseInt;
     protected int numTry;
 
     /**
-     * La valeur du mode: Peut Ãªtre rÃ©cupÃ©rÃ©e
+     * La valeur du mode: Peut être récupérée
      * @see Game#getMode()
      */
     protected int mode;
@@ -75,7 +110,7 @@ import static java.lang.Integer.parseInt;
     /**
      * Constructeur Game
      * <p>
-     * A la construction d'un objet Game, le "mode" et le jeu choisis sont attendus en paramÃ¨tre
+     * A la construction d'un objet Game, le "mode" et le jeu choisis sont attendus en paramètre
      * vide.
      * </p>
      *
@@ -96,7 +131,7 @@ import static java.lang.Integer.parseInt;
 	/**
      *<p>
      *  Affiche le jeu sélectionné selon le mode choisi
-     *  GÃ¨re les conditions de sorties du jeu
+     *  Gère les conditions de sorties du jeu
      *  Affiche le message de fin de partie
      *  Affiche le menu de fin
      *</p>
@@ -107,10 +142,12 @@ import static java.lang.Integer.parseInt;
         	generateChallengerCombination();
         }else if(getMode() == 2) {
             generateDefenderCombination();
-        }if ("true".equals(Config.getValue("cheatmode"))) {
-            log.debug(getCombination());
-            System.out.println(getCombination());
-       }
+       } else if(this.getMode() == 3) {     	
+       		DuelRecherche.duelMode();
+       }if ("true".equals(Config.getValue("cheatmode"))) {
+           log.debug(getCombination());
+           System.out.println(getCombination());
+           
         while (isRunning()) {
             this.response = "";
 
@@ -124,29 +161,40 @@ import static java.lang.Integer.parseInt;
             } else if(this.getMode() == 2) {
             	defender();
 
-            } else if(this.getMode() == 3) {
-                defender();
-                checkProposition();
-                displayResponse();
-                this.numTry++;
-                try {
-                    challenger();
-                } catch (GameException e) {
-                    e.printStackTrace();
-                }
-            }
-                checkProposition();
-                displayResponse();
-                this.numTry++;
-        }
-            if(isResolved()) {
-                System.out.println("Vous avez gagnÃ© !");
-            } else {
-                System.out.println("Vous avez perdu !");
-            }
-        Menu.displayEndMenu();
+            }if(this.getMode() == 1 || this.getMode() == 2 ) {
+	        	  checkProposition();
+	              displayResponse();
+	              this.numTry++;
+            	}
+        	}
+	        if(this.getMode() == 1 || this.getMode() == 2 ) {
+	            if(isResolved()) {
+	                System.out.println("Vous avez gagné !");
+	            } else {
+	                System.out.println("Vous avez perdu !");
+	            }
+	        }
+	        	Menu.displayEndMenu();
+	    }
     }
 
+    /**
+     * Retourne la combination générée
+     *
+     * @return La combinaison générée par la méthode ThreadLocalRandom
+     */
+    public int generateAICombinationDuel() {
+    	int digits = parseInt(Config.getValue("nbreChiffres"));
+    	int minimum = (int) Math.pow(10, digits - 1); // minimum value with 2 digits is 10 (10^1)
+        int maximum = (int) Math.pow(10, digits) - 1; // maximum value with 2 digits is 99 (10^2 - 1)
+        Random random = new Random();
+        duelCombinationAI = minimum + random.nextInt((maximum - minimum) + 1);
+        String solution_ = Integer.toString(duelCombinationAI);
+        solutionAI = solution_.split("");
+
+        return duelCombinationAI;
+}
+    
     /**
      * Retourne la combination générée
      *
@@ -165,10 +213,39 @@ import static java.lang.Integer.parseInt;
 }
 
     /**
-     *  Saisi de la combinaison secrÃ¨te par le joueur
-     *  La combinaison entrÃ©e devient la solution de la partie en cours
+     *  Saisi de la combinaison secrète par le joueur en mode duel
+     *  La combinaison entrée devient la solution de la partie en cours
      *
-     * @throws GameException si les chiffres saisis sont supÃ©rieurs ou infÃ©rieurs au nombre attendu
+     * @throws GameException si les chiffres saisis sont supérieurs ou inférieurs au nombre attendu
+     */
+    public void generatePlayerCombinationDuel() {
+        int nbreChiffres = parseInt(Config.getValue("nbreChiffres"));
+        System.out.println("Veuillez saisir une combinaison de " + nbreChiffres + " chiffres ");
+        boolean demandeSaisie = true;
+        boolean isNumber;
+
+        while (demandeSaisie) {
+            Scanner scan = new Scanner(System.in);
+            try {
+                duelCombinationPlayer = scan.nextInt();
+                isNumber = true;
+            }
+            catch(InputMismatchException inputException) {
+                System.out.println("Veuillez saisir un chiffre !");
+                isNumber = false;
+
+            }if(isNumber) {
+                this.solutionPlayer = Integer.toString(duelCombinationPlayer).split("");
+                demandeSaisie = checkNumberPlayer(nbreChiffres, demandeSaisie, duelCombinationPlayer);
+            }
+        }
+    }
+   
+    /**
+     *  Saisi de la combinaison secrète par le joueur pour les modes Challenger et Défenseur
+     *  La combinaison entrée devient la solution de la partie en cours
+     *
+     * @throws GameException si les chiffres saisis sont supérieurs ou inférieurs au nombre attendu
      */
     public void generateDefenderCombination() {
         int nbreChiffres = parseInt(Config.getValue("nbreChiffres"));
@@ -194,12 +271,30 @@ import static java.lang.Integer.parseInt;
     }
 
     /**
-     * Int combination to String to get length
-     * Display error message if tailleNombre != nbChiffres
+     * Combinaison de type Integer convertie en type String pour obtenir sa taille
+     * Affiche un message demandant la saisie d'une nouvelle combinaison si tailleNombre != nbChiffres
+     * 
      * @return true
      */
     private boolean checkNumber(int nbreChiffres, boolean demandeSaisie, Integer combination) {
         int tailleNbre = combination.toString().length();
+        if (tailleNbre != nbreChiffres) {
+            System.out.println("Merci de ressaisir une combinaison de " + nbreChiffres);
+        } else if(tailleNbre == nbreChiffres) {
+            demandeSaisie = false;
+        }
+        return demandeSaisie;
+    }
+    
+    /**
+     * Utilisée pour le mode duel
+     * Combinaison de type Integer convertie en type String pour obtenir sa taille
+     * Affiche un message demandant la saisie d'une nouvelle combinaison si tailleNombre != nbChiffres
+     * 
+     * @return true
+     */
+    private boolean checkNumberPlayer(int nbreChiffres, boolean demandeSaisie, Integer duelCombinationPlayer) {
+        int tailleNbre = duelCombinationPlayer.toString().length();
         if (tailleNbre != nbreChiffres) {
             System.out.println("Merci de ressaisir une combinaison de " + nbreChiffres);
         } else if(tailleNbre == nbreChiffres) {
@@ -212,7 +307,7 @@ import static java.lang.Integer.parseInt;
      *  Saisi de la proposition par le joueur
      *  La saisie devient la proposition
      *
-     * @throws GameException si les chiffres saisis sont supÃ©rieurs ou infÃ©rieurs au nombre attendu
+     * @throws GameException si les chiffres saisis sont supérieurs ou inférieurs au nombre attendu
      */
     public void challenger() throws GameException  {
         int nbreChiffres = parseInt(Config.getValue("nbreChiffres"));
@@ -222,15 +317,15 @@ import static java.lang.Integer.parseInt;
         prop = reader.nextInt();
         int tailleNbre = Integer.toString(prop).length();
         if ( nbreChiffres!= tailleNbre){
-            throw new GameException("Une combinaison Ã  " + nbreChiffres + " chiffres est attendue");
+            throw new GameException("Une combinaison à  " + nbreChiffres + " chiffres est attendue");
         }
         this.proposition = Integer.toString(prop).split("");
-        System.out.println(prop);
+        System.out.println("La proposition du joueur est : " + prop);
     }
 
     /**
-     *  GÃ©nÃ©ration de la proposition de l'AI via la mÃ©thode ThreadLocalRandom
-     *  La combinaison gÃ©nÃ©rÃ©e devient la proposition
+     *  Génération de la proposition de l'AI via la méthode ThreadLocalRandom
+     *  La combinaison générée devient la proposition
      */
     public void defender() {
     	int digits = parseInt(Config.getValue("nbreChiffres"));
@@ -240,19 +335,79 @@ import static java.lang.Integer.parseInt;
         prop = minimum + random.nextInt((maximum - minimum) + 1);
         String prop_ = Integer.toString(prop);
         proposition = prop_.split("");
-        System.out.println(prop);
+        System.out.println("La proposition de l'ordinateur est : " + prop);
     }
-
+   
+    /**
+     * Retourne la proposion saisie
+     *
+     * @return la chaîne de caractère correspondant à la proposition entrée
+     */
     public int getProp() {
         return prop;
     }
 
+    /**
+     * Retourne le mode choisi
+     *
+     * @return la chaîne de caractère correspondant au mode sélectionné
+     */
     public int getMode() {
         return mode;
     }
-
+    
+    /**
+     * Retourne la combinaison saisie pour le mode Challenger et Défenseur
+     *
+     * @return la chaîne de caractère correspondant à la combinaison saisie
+     */
     public int getCombination() {
-        return combination;
+    	return combination;
+    }
+    
+    /**
+     * Retourne la combinaison saisie par l'ordinateur
+     *
+     * @return la chaîne de caractère correspondant à la combinaison saisie
+     */
+    public int getDuelCombinationAI() {
+        return duelCombinationAI;
+    }
+    
+    /**
+     * Retourne la combinaison saisie par le joueur
+     *
+     * @return la chaîne de caractère correspondant à la combinaison saisie
+     */
+    public int getDuelCombinationPlayer() {
+        return duelCombinationPlayer;
+    }
+    
+    /**
+     * Retourne la réponse pour le mode Challenger et Défenseur
+     *
+     * @return la chaîne de caractère correspondant à la réponse saisie
+     */
+    public String getResponse() {
+        return response;
+    }
+    
+    /**
+     * Retourne la réponse de l'ordinateur
+     *
+     * @return la chaîne de caractère correspondant à la réponse de l'ordinateur
+     */
+    public String getAiResponse() {
+        return aiResponse;
+    }
+    
+    /**
+     * Retourne la réponse du joueur
+     *
+     * @return la chaîne de caractère correspondant à la réponse saisie par le joueur
+     */
+    public String getPlayerResponse() {
+        return playerResponse;
     }
 
     /**
@@ -260,19 +415,19 @@ import static java.lang.Integer.parseInt;
      *
      * @return vrai si numTry < MAX_NUM_TRY, sinon retourne faux
      */
-    // Ã  vÃ©rifier !
     private boolean checkNumTry() {
         return this.numTry < parseInt(Config.getValue("nbreChiffres"))? true : false;
     }
 
     /**
-     * Retourne vrai ou faux selon les valeurs des mÃ©thodes CheckNumTry et isResolved
+     * Retourne vrai ou faux selon les valeurs des méthodes CheckNumTry et isResolved
      *
      * @return VRAI si CheckNumTry == VRAI et isResolved == faux, sinon retourne FAUX
      */
     private boolean isRunning() {
         return checkNumTry() && !isResolved();
     }
+    
     abstract void checkProposition();
     abstract Boolean isResolved();
     abstract void displayResponse();

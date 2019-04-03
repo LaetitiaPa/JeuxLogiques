@@ -5,7 +5,7 @@ public class GameException extends Exception {
     }
 
     /**
-     * Utilisation cÃ´tÃ© utilisateur, affiche seulement le message d'erreur.
+     * Utilisation côté utilisateur, affiche seulement le message d'erreur.
      */
     @Override
     public String toString() {

@@ -6,22 +6,22 @@ import java.util.Properties;
 import org.apache.log4j.Logger;
 
 /**
- * La classe Config contient les Ã©lÃ©ments permettant la lecture et l'extraction du fichier config.properties
+ * La classe Config contient les éléments permettant la lecture et l'extraction du fichier config.properties
  */
 public class Config {
 
     /**
-     * CrÃ©ation de l'instance Logger en utilisant la mÃ©thode getLogger()
+     * Création de l'instance Logger en utilisant la méthode getLogger()
      */
     private final static Logger log = Logger.getLogger(String.valueOf(Config.class));
 
     /**
-     * Liste contenant les propriÃ©tÃ©s extraites du fichier config.properties
+     * Liste contenant les propriétés extraites du fichier config.properties
      */
     private static Properties props;
 
     /**
-     * Lit le fichier et charge les Ã©lÃ©ments contenus dans le fichier config.properties
+     * Lit le fichier et charge les éléments contenus dans le fichier config.properties
      *
      */
     private static void loadProps() {
@@ -39,9 +39,9 @@ public class Config {
     }
 
     /**
-     * RÃ©cupÃ©re la proprietÃ© qui a pour valeur le contenu de la variable passÃ©e en paramÃ¨tre
+     * Récupére la proprieté qui a pour valeur le contenu de la variable passée en paramètre
      *
-     * @return La valeur de la proprietÃ© correspondant Ã  la valeur de la variable value
+     * @return La valeur de la proprieté correspondant Ã  la valeur de la variable value
      */
     public static String getValue(String value) {
         if (props == null)

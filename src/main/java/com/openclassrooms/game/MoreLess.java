@@ -2,8 +2,8 @@ package com.openclassrooms.game;
 import org.apache.log4j.Logger;
 
 /**
- * La classe MoreLess contient toutes les caractÃ©ristiques propres au jeu de recherche +/-
- * Elle hÃ©rite de la classe Game
+ * La classe MoreLess contient toutes les caractéristiques propres au jeu de recherche +/-
+ * Elle hérite de la classe Game
  * @see Game#mode
  * @see Game#gameChoice
  * </p>
@@ -12,7 +12,7 @@ import org.apache.log4j.Logger;
 public class MoreLess extends Game {
 
     /**
-     * CrÃ©ation de l'instance Logger en utilisant la mÃ©thode getLogger()
+     * Création de l'instance Logger en utilisant la méthode getLogger()
      */
     private final static Logger log = Logger.getLogger(String.valueOf(MoreLess.class));
 
@@ -23,11 +23,29 @@ public class MoreLess extends Game {
     public MoreLess() {
 		super();
 	}
+    
+	/**
+     * Vérification des entrées du tableau proposition avec celui du tableau solution
+     *
+     * Les variables present et wellPlaced sont instanciées selon les résultats
+     */
+    public void checkPropositionAI() {
+    	this.aiResponse = "";
+        for (int i = 0; i < this.solutionPlayer.length; i++) {
+            if (this.proposition[i].equals(this.solutionPlayer[i])) {
+                this.aiResponse += "=";            
+            } else if (Integer.parseInt(this.proposition[i]) > Integer.parseInt(this.solutionPlayer[i])) {
+                this.aiResponse += "-";
+            } else if (Integer.parseInt(this.proposition[i]) < Integer.parseInt(this.solutionPlayer[i])) {
+                this.aiResponse += "+";
+            }
+        }
+    }
 
 	/**
-     * VÃ©rification des entrÃ©es du tableau proposition avec celui du tableau solution
+     * Vérification des entrées du tableau proposition avec celui du tableau solution
      *
-     * Les variables present et wellPlaced sont instanciÃ©es selon les rÃ©sultats
+     * Les variables present et wellPlaced sont instanciées selon les résultats
      */
     public void checkProposition() {
     	this.response = "";
@@ -41,12 +59,30 @@ public class MoreLess extends Game {
             }
         }
     }
-
-    /**
-     * Retourne vrai ou faux selon la comparaison obtenue entre les mÃ©thodes getProp() contenant la propositon du joueur
-     * et la mÃ©thode getCombination() contenant la solution
+    
+	/**
+     * Vérification des entrées du tableau proposition avec celui du tableau solution
      *
-     * @return VRAI si la valeur de getProp() est Ã©gal Ã  la valeur de getCombination(), sinon retourne FAUX
+     * Les variables present et wellPlaced sont instanciées selon les résultats
+     */
+    public void checkPropositionPlayer() {
+    	this.playerResponse = "";
+        for (int i = 0; i < this.solutionAI.length; i++) {
+            if (this.proposition[i].equals(this.solutionAI[i])) {
+                this.playerResponse += "=";            
+            } else if (Integer.parseInt(this.proposition[i]) > Integer.parseInt(this.solutionAI[i])) {
+                this.playerResponse += "-";
+            } else if (Integer.parseInt(this.proposition[i]) < Integer.parseInt(this.solutionAI[i])) {
+                this.playerResponse += "+";
+            }
+        }
+    }
+	
+    /**
+     * Retourne vrai ou faux selon la comparaison obtenue entre les méthodes getProp() contenant la propositon du joueur
+     * et la méthode getCombination() contenant la solution
+     *
+     * @return VRAI si la valeur de getProp() est égal Ã  la valeur de getCombination(), sinon retourne FAUX
      */
     public Boolean isResolved() {
         return getProp() == getCombination() ? true : false;
@@ -55,6 +91,15 @@ public class MoreLess extends Game {
     public void displayResponse() {
         System.out.println("Proposition: " + this.getProp() + " -> Réponse : " + this.response);
     }
+    
+    public void displayResponsePlayer() {
+        System.out.println("Proposition: " + this.getProp() + " -> Réponse : " + this.playerResponse);
+    }
+    
+    public void displayResponseAI() {
+        System.out.println("Proposition: " + this.getProp() + " -> Réponse : " + this.aiResponse);
+    }
+
 
 }
 
