@@ -15,81 +15,85 @@ public class DuelRecherche {
      *</p>
      */
 	public static void duelMode() {
-		log.info("Début du mode Duel");
-		MoreLess gameDuel = new MoreLess();
+		log.info("Début du jeu de recherche +/- en mode duel");
 		int nbEssai = Integer.parseInt(Config.getValue("nbessai"));
-		
+	
 		int compteur = 0;
 		int playerResponse = 0; // Joueur == 0 : humain / joueur == 1 : ordinateur
-		String lastAIResponse = "";
-		String lastPlayerResponse = "";
 		boolean winner = false;
 		boolean initPlayerResponse = false;
 		
-		gameDuel.generateAICombinationDuel();
+		MoreLess duelMoreLess = new MoreLess();	
+		duelMoreLess.generateAICombinationDuel();
 		if ("true".equals(Config.getValue("cheatmode"))) {
-            System.out.println("La combinaison secrète de l'ordinateur: " + gameDuel.getDuelCombinationAI());    
+            System.out.println("La combinaison secrète de l'ordinateur: " + duelMoreLess.getDuelCombinationAI());    
 		}
-		
 		while (compteur < nbEssai) {
-			if (!initPlayerResponse) {
-				System.out.println("Le joueur propose sa réponse");
-				try {
-					gameDuel.challenger();
-					gameDuel.checkPropositionPlayer();
-					gameDuel.displayResponsePlayer();
-				} catch (GameException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
-				System.out.println("Le joueur propose sa combinaison");
-				gameDuel.generatePlayerCombinationDuel();
-				gameDuel.defender();
-				gameDuel.checkPropositionAI();
-				gameDuel.displayResponseAI();
-				playerResponse = 0;
-				initPlayerResponse = true;
-				compteur += 1;
-				Debug.print("Compteur : " + compteur);
+			System.out.println("Le joueur propose sa réponse");
+			try {
+				duelMoreLess.challenger();
+			} catch (GameException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
 			}
+			duelMoreLess.checkPlayerProposition();
+			duelMoreLess.displayPlayerResponse();		
 			
+			if (!initPlayerResponse) {
+			System.out.println("Le joueur propose sa combinaison");
+			duelMoreLess.generatePlayerCombinationDuel();
+			}
+			duelMoreLess.defender();
+			duelMoreLess.checkAIProposition();
+			duelMoreLess.displayAIResponse();		
+			playerResponse = 0;
+			initPlayerResponse = true;
+			compteur += 1;
+			Debug.print("Compteur : " + compteur);
+
             if (playerResponse == 0) {   	
-  				try {
-				gameDuel.challenger();
-				gameDuel.checkPropositionPlayer();
-				gameDuel.displayResponsePlayer();
-				lastPlayerResponse = gameDuel.getPlayerResponse();
+            try {
+  				duelMoreLess.challenger();
+				duelMoreLess.checkPlayerProposition();
+				duelMoreLess.displayPlayerResponse();
 				playerResponse = 1;
 			} catch (GameException e) {
 				e.printStackTrace();
 				}
-	        }if (playerResponse == 1) {
-				gameDuel.defender();
-				gameDuel.checkPropositionAI();
-				gameDuel.displayResponseAI();	
-				lastAIResponse = gameDuel.getAiResponse();
+	        }
+            if (playerResponse == 1) {
+				duelMoreLess.defender();
+				duelMoreLess.checkAIProposition();
+				duelMoreLess.displayAIResponse();	
 				playerResponse = 0;	
-			}
+			} 
    			compteur += 1;
 			Debug.print("Compteur : " + compteur);
 			
-			if (lastPlayerResponse.equals("======")) {
+			if (duelMoreLess.getDuelCombinationAI() == duelMoreLess.getPlayerProp()){
 				System.out.println("Vous avez gagné contre l'ordinateur");
 				winner = true;
 				break;
-				
-			}else if (lastAIResponse.equals("======")) {
+			}else if (duelMoreLess.getAIProp() == duelMoreLess.getDuelCombinationPlayer()){
 				System.out.println("Vous avez perdu contre l'ordinateur");
 				winner = true;
 				break;
 			}
-			
 		}
 		if (winner == false) {
 			System.out.println("Egalité, pas de vainqueur");
-		}      
+		}
 	}
-	
 }
+	
 
+	
+
+
+				
+			
+
+
+	
+		
 

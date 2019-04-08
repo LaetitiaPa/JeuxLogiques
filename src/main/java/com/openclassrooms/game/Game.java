@@ -58,22 +58,43 @@ import static java.lang.Integer.parseInt;
      * @see Game#getProp()
      */
     protected  int prop;
+    
+    /**
+     * La valeur de la proposition: Peut être récupérée
+     * @see Game#getProp()
+     */
+    protected  int playerProp;
+    
+    /**
+     * La valeur de la proposition: Peut être récupérée
+     * @see Game#getProp()
+     */
+    protected  int AIProp;
 
     /**
      * Tableau contenant la proposition du joueur
      */
     protected String[] proposition;
-
+    
     /**
-     * Tableau contenant la solution du jeu
+     * Tableau contenant la proposition du joueur
      */
+    protected String[] AIProposition;
     
+    /**
+     * Tableau contenant la proposition du joueur
+     */
+    protected String[] playerProposition;
+    
+    
+    /**
+     * Tableau contenant la solution du jeu 
+     */
     protected String[] solution;
-    
+
     /**
      * Tableau contenant la solution du jeu pour le mode Duel / Player
      */
-    
     protected String[] solutionPlayer;
     
     /**
@@ -140,42 +161,45 @@ import static java.lang.Integer.parseInt;
         log.info("Début du jeu");
         if(getMode() == 1) {
         	generateChallengerCombination();
-        }else if(getMode() == 2) {
+       }else if (getMode() == 2) {
             generateDefenderCombination();
-       } else if(this.getMode() == 3) {     	
+       }else if (this.getMode() == 3 && this.gameChoice == 1) {     	
        		DuelRecherche.duelMode();
-       }if ("true".equals(Config.getValue("cheatmode"))) {
-           log.debug(getCombination());
-           System.out.println(getCombination());
+       }else if (this.getMode() == 3 && this.gameChoice == 2) {
+    	   DuelMastermind.duelMode();
+       }
+       if ("true".equals(Config.getValue("cheatmode"))) {
+	       log.debug(getCombination());
+	       System.out.println(getCombination());   
            
-        while (isRunning()) {
-            this.response = "";
+	   while (isRunning()) {
+		    this.response = "";
+		
+		    if (this.getMode() == 1) {
+		        try {
+		            challenger();
+		        } catch (GameException e) {
+		            System.out.println(e.toString());
+		            continue;
+		        }
+		    }else if (this.getMode() == 2) {
+		    	defender();
 
-            if(this.getMode() == 1) {
-                try {
-                    challenger();
-                } catch (GameException e) {
-                    System.out.println(e.toString());
-                    continue;
-                }
-            } else if(this.getMode() == 2) {
-            	defender();
-
-            }if(this.getMode() == 1 || this.getMode() == 2 ) {
+            }if (this.getMode() == 1 || this.getMode() == 2 ) {
 	        	  checkProposition();
 	              displayResponse();
 	              this.numTry++;
             	}
-        	}
-	        if(this.getMode() == 1 || this.getMode() == 2 ) {
+	        }
+	        if (this.getMode() == 1 || this.getMode() == 2 ) {
 	            if(isResolved()) {
 	                System.out.println("Vous avez gagné !");
 	            } else {
 	                System.out.println("Vous avez perdu !");
 	            }
 	        }
-	        	Menu.displayEndMenu();
-	    }
+	        	Menu.displayEndMenu();    
+       }
     }
 
     /**
@@ -200,6 +224,7 @@ import static java.lang.Integer.parseInt;
      *
      * @return La combinaison générée par la méthode ThreadLocalRandom
      */
+    
     public int generateChallengerCombination() {
     	int digits = parseInt(Config.getValue("nbreChiffres"));
     	int minimum = (int) Math.pow(10, digits - 1); // minimum value with 2 digits is 10 (10^1)
@@ -286,13 +311,13 @@ import static java.lang.Integer.parseInt;
         return demandeSaisie;
     }
     
-    /**
-     * Utilisée pour le mode duel
-     * Combinaison de type Integer convertie en type String pour obtenir sa taille
-     * Affiche un message demandant la saisie d'une nouvelle combinaison si tailleNombre != nbChiffres
-     * 
-     * @return true
-     */
+	/**
+	 * Utilisée pour le mode duel
+	 * Combinaison de type Integer convertie en type String pour obtenir sa taille
+	 * Affiche un message demandant la saisie d'une nouvelle combinaison si tailleNombre != nbChiffres
+	 * 
+	 * @return true
+	 */
     private boolean checkNumberPlayer(int nbreChiffres, boolean demandeSaisie, Integer duelCombinationPlayer) {
         int tailleNbre = duelCombinationPlayer.toString().length();
         if (tailleNbre != nbreChiffres) {
@@ -316,7 +341,7 @@ import static java.lang.Integer.parseInt;
         Scanner reader = new Scanner(System.in);
         prop = reader.nextInt();
         int tailleNbre = Integer.toString(prop).length();
-        if ( nbreChiffres!= tailleNbre){
+        if ( nbreChiffres != tailleNbre){
             throw new GameException("Une combinaison à  " + nbreChiffres + " chiffres est attendue");
         }
         this.proposition = Integer.toString(prop).split("");
@@ -346,6 +371,24 @@ import static java.lang.Integer.parseInt;
     public int getProp() {
         return prop;
     }
+    
+    /**
+     * Retourne la proposion saisie
+     *
+     * @return la chaîne de caractère correspondant à la proposition entrée
+     */
+    public int getPlayerProp() {
+        return playerProp;
+    }
+    
+    /**
+     * Retourne la proposion saisie
+     *
+     * @return la chaîne de caractère correspondant à la proposition entrée
+     */
+    public int getAIProp() {
+        return AIProp;
+    }
 
     /**
      * Retourne le mode choisi
@@ -354,6 +397,15 @@ import static java.lang.Integer.parseInt;
      */
     public int getMode() {
         return mode;
+    }
+    
+    /**
+     * Retourne le jeux choisi
+     *
+     * @return la chaîne de caractère correspondant au jeu sélectionné
+     */
+    public int getGameChoice() {
+        return gameChoice;
     }
     
     /**
@@ -397,7 +449,7 @@ import static java.lang.Integer.parseInt;
      *
      * @return la chaîne de caractère correspondant à la réponse de l'ordinateur
      */
-    public String getAiResponse() {
+    public String getAIResponse() {
         return aiResponse;
     }
     

@@ -160,11 +160,11 @@ public class Menu {
             MoreLess moreLess = new MoreLess(modeChoice, gameChoice);
             moreLess.run();
 
-        } else if (gameChoice == 2) {
+        }else if (gameChoice == 2) {
             Mastermind mastermind = new Mastermind(modeChoice, gameChoice);
             mastermind.run();
 
-        } else if(gameChoice == 3) {
+        }else if(gameChoice == 3) {
             quit();
         }
     }
@@ -207,11 +207,11 @@ public class Menu {
     public static void endChoiceMenu() {
         if(endGameChoice == 1) {
             runGame();
-        } else if(endGameChoice == 2) {
+        }else if(endGameChoice == 2) {
             askGame();
             askMode();
             runGame();
-        } else if(endGameChoice == 3) {
+        }else if(endGameChoice == 3) {
             System.exit(0);
         }
     }

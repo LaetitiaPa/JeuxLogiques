@@ -29,14 +29,14 @@ public class MoreLess extends Game {
      *
      * Les variables present et wellPlaced sont instanciées selon les résultats
      */
-    public void checkPropositionAI() {
+    public void checkAIProposition() {
     	this.aiResponse = "";
         for (int i = 0; i < this.solutionPlayer.length; i++) {
-            if (this.proposition[i].equals(this.solutionPlayer[i])) {
+            if (this.AIProposition[i].equals(this.solutionPlayer[i])) {
                 this.aiResponse += "=";            
-            } else if (Integer.parseInt(this.proposition[i]) > Integer.parseInt(this.solutionPlayer[i])) {
+            }else if (Integer.parseInt(this.AIProposition[i]) > Integer.parseInt(this.solutionPlayer[i])) {
                 this.aiResponse += "-";
-            } else if (Integer.parseInt(this.proposition[i]) < Integer.parseInt(this.solutionPlayer[i])) {
+            }else if (Integer.parseInt(this.AIProposition[i]) < Integer.parseInt(this.solutionPlayer[i])) {
                 this.aiResponse += "+";
             }
         }
@@ -52,9 +52,9 @@ public class MoreLess extends Game {
         for (int i = 0; i < this.solution.length; i++) {
             if (this.proposition[i].equals(this.solution[i])) {
                 this.response += "=";            
-            } else if (Integer.parseInt(this.proposition[i]) > Integer.parseInt(this.solution[i])) {
+            }else if (Integer.parseInt(this.proposition[i]) > Integer.parseInt(this.solution[i])) {
                 this.response += "-";
-            } else if (Integer.parseInt(this.proposition[i]) < Integer.parseInt(this.solution[i])) {
+            }else if (Integer.parseInt(this.proposition[i]) < Integer.parseInt(this.solution[i])) {
                 this.response += "+";
             }
         }
@@ -65,14 +65,14 @@ public class MoreLess extends Game {
      *
      * Les variables present et wellPlaced sont instanciées selon les résultats
      */
-    public void checkPropositionPlayer() {
+    public void checkPlayerProposition() {
     	this.playerResponse = "";
         for (int i = 0; i < this.solutionAI.length; i++) {
-            if (this.proposition[i].equals(this.solutionAI[i])) {
+            if (this.playerProposition[i].equals(this.solutionAI[i])) {
                 this.playerResponse += "=";            
-            } else if (Integer.parseInt(this.proposition[i]) > Integer.parseInt(this.solutionAI[i])) {
+            }else if (Integer.parseInt(this.playerProposition[i]) > Integer.parseInt(this.solutionAI[i])) {
                 this.playerResponse += "-";
-            } else if (Integer.parseInt(this.proposition[i]) < Integer.parseInt(this.solutionAI[i])) {
+            }else if (Integer.parseInt(this.playerProposition[i]) < Integer.parseInt(this.solutionAI[i])) {
                 this.playerResponse += "+";
             }
         }
@@ -92,12 +92,12 @@ public class MoreLess extends Game {
         System.out.println("Proposition: " + this.getProp() + " -> Réponse : " + this.response);
     }
     
-    public void displayResponsePlayer() {
-        System.out.println("Proposition: " + this.getProp() + " -> Réponse : " + this.playerResponse);
+    public void displayPlayerResponse() {
+        System.out.println("Proposition: " + this.getPlayerProp() + " -> Réponse : " + this.playerResponse);
     }
     
-    public void displayResponseAI() {
-        System.out.println("Proposition: " + this.getProp() + " -> Réponse : " + this.aiResponse);
+    public void displayAIResponse() {
+        System.out.println("Proposition: " + this.getAIProp() + " -> Réponse : " + this.aiResponse);
     }
 
 
