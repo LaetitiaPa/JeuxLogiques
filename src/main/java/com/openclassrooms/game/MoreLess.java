@@ -30,6 +30,7 @@ public class MoreLess extends Game {
      * Les variables present et wellPlaced sont instanciées selon les résultats
      */
     public void checkAIProposition() {
+    	log.trace("Utilisation de la méthode checkProposition du jeu de Recherche +/-");
     	this.aiResponse = "";
         for (int i = 0; i < this.solutionPlayer.length; i++) {
             if (this.AIProposition[i].equals(this.solutionPlayer[i])) {
@@ -82,7 +83,7 @@ public class MoreLess extends Game {
      * Retourne vrai ou faux selon la comparaison obtenue entre les méthodes getProp() contenant la propositon du joueur
      * et la méthode getCombination() contenant la solution
      *
-     * @return VRAI si la valeur de getProp() est égal Ã  la valeur de getCombination(), sinon retourne FAUX
+     * @return VRAI si la valeur de getProp() est égal Ã  la valeur de getCombination(), sinon retourne FAUX
      */
     public Boolean isResolved() {
         return getProp() == getCombination() ? true : false;
@@ -100,7 +101,4 @@ public class MoreLess extends Game {
         System.out.println("Proposition: " + this.getAIProp() + " -> Réponse : " + this.aiResponse);
     }
 
-
 }
-
-

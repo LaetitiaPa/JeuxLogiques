@@ -31,7 +31,7 @@ public class DuelRecherche {
 		while (compteur < nbEssai) {
 			System.out.println("Le joueur propose sa réponse");
 			try {
-				duelMoreLess.challenger();
+				duelMoreLess.challengerDuel();
 			} catch (GameException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
@@ -43,7 +43,7 @@ public class DuelRecherche {
 			System.out.println("Le joueur propose sa combinaison");
 			duelMoreLess.generatePlayerCombinationDuel();
 			}
-			duelMoreLess.defender();
+			duelMoreLess.defenderDuel();
 			duelMoreLess.checkAIProposition();
 			duelMoreLess.displayAIResponse();		
 			playerResponse = 0;
@@ -62,7 +62,7 @@ public class DuelRecherche {
 				}
 	        }
             if (playerResponse == 1) {
-				duelMoreLess.defender();
+				duelMoreLess.defenderDuel();
 				duelMoreLess.checkAIProposition();
 				duelMoreLess.displayAIResponse();	
 				playerResponse = 0;	
@@ -85,15 +85,3 @@ public class DuelRecherche {
 		}
 	}
 }
-	
-
-	
-
-
-				
-			
-
-
-	
-		
-

@@ -52,7 +52,7 @@ public class Mastermind extends Game {
 	 * Les variables present et wellPlaced sont instanciées selon les résultats
 	 */
 	public void checkProposition() {
-		log.trace("Utilisation de la méthode checkProposition");
+		log.trace("Utilisation de la méthode checkProposition du jeu Mastermind");
 		// To be improved to avoid cast at each call
 		List<String> propositionAsList = Arrays.asList(proposition);
 		this.present = 0;
@@ -75,7 +75,7 @@ public class Mastermind extends Game {
 	 * Les variables present et wellPlaced sont instanciées selon les résultats
 	 */
 	public void checkPlayerProposition() {
-		log.trace("Utilisation de la méthode checkProposition");
+		log.trace("Utilisation de la méthode checkProposition du jeu Mastermind côté joueur");
 		// To be improved to avoid cast at each call
 		List<String> propositionPlayerAsList = Arrays.asList(playerProposition);
 		this.present = 0;
@@ -98,7 +98,7 @@ public class Mastermind extends Game {
 	 * Les variables present et wellPlaced sont instanciées selon les résultats
 	 */
 	public void checkAIProposition() {
-		log.trace("Utilisation de la méthode checkProposition");
+		log.trace("Utilisation de la méthode checkProposition du jeu Mastermind côté AI");
 		// To be improved to avoid cast at each call
 		List<String> propositionAIAsList = Arrays.asList(AIProposition);
 		this.present = 0;

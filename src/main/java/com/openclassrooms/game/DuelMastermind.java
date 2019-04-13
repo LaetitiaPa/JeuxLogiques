@@ -35,7 +35,7 @@ public class DuelMastermind {
 			duelMastermind.challenger();
 		} catch (GameException e) {
 			// TODO Auto-generated catch block
-			e.printStackTrace();
+			log.error("Erreur du lancement du mode Challenger" + e.getMessage());
 		}
 		duelMastermind.checkPlayerProposition();
 		duelMastermind.displayAIResponse();

@@ -65,6 +65,7 @@ public class Menu {
      *
      */
     public static void display() {
+    	log.trace("Début de l'utilisation de la méthode display");
         while (!gameChoices.contains(gameChoice)) {
             askGame();
         }
@@ -80,6 +81,7 @@ public class Menu {
      *
      */
     public static void displayEndMenu() {
+    	log.trace("Début de l'utilisation de la méthode displayEndMenu");
         while(!endGameChoices.contains(endGameChoice)) {
             endGameMenu();
         }
@@ -97,6 +99,7 @@ public class Menu {
      * @param
      */
     public static void askGame() {
+    	log.info("Lancement du menu des jeux");
         Scanner input = new Scanner(System.in);
         System.out.println("Veuillez choisir un jeu :");
         System.out.println(" 1- Plus ou Moins");
@@ -106,6 +109,7 @@ public class Menu {
         try {
         	gameChoice = input.nextInt();
         } catch(InputMismatchException inputException) {
+        	log.warn("Erreur de saisie");
             System.out.println("Veuillez saisir un chiffre !");
         }
 
@@ -134,6 +138,7 @@ public class Menu {
      * Stock la saisie du joueur dans la variable modeChoice
      */
     public static void askMode() {
+    	log.info("Lancement du menu des modes");
         Scanner input = new Scanner(System.in);
         System.out.println("Veuillez choisir un mode");
         System.out.println("1- Challenger");
@@ -143,6 +148,7 @@ public class Menu {
         try {
             modeChoice = input.nextInt();
         } catch(InputMismatchException inputException) {
+        	log.warn("Erreur de saisie");
             System.out.println("Veuillez saisir un chiffre !");
         }
     }

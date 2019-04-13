@@ -1,38 +1,21 @@
 package com.openclassrooms.game;
-import org.apache.log4j.Logger;
+
+import static java.lang.Integer.parseInt;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.InputMismatchException;
-import java.util.List;
 import java.util.Random;
 import java.util.Scanner;
-import java.util.concurrent.ThreadLocalRandom;
 
-import static java.lang.Integer.parseInt;
+import org.apache.log4j.Logger;
 
-import java.sql.Array;
-
-/**
- * La classe Game contient toutes les caractéristiques d'un jeu
- * <p>
- * un jeu se caractérise par les informations suivantes :
- * <ul>
- * <li>Une combinaison secrète.</li>
- * <li>Une proposition entrée par l'adversaire.</li>
- * <li>Une réponse affichée.</li>
- * <li>Un nombre d'essai.</li>
- * <li>Un choix du jeu</li>
- * <li>Un choix du mode</li>
- * </ul>
- * </p>
- */
-  abstract class Game {
-
-    /**
+public class DefenderModeTest {
+	
+	 /**
      * Création de l'instance Logger en utilisant la méthode getLogger()
      */
-    private final static Logger log = Logger.getLogger(String.valueOf(Game.class));
+    private final static Logger log = Logger.getLogger(String.valueOf(DefenderModeTest.class));
 
     /**
      * Le choix du jeu. Peut être réupéré
@@ -164,19 +147,7 @@ import java.sql.Array;
      * vide.
      * </p>
      *
-     * @param mode
-     *            Le mode du jeu choisi
-     * @param gameChoice
-     *            Le jeu choisi
-     */
-    public Game(int mode, int gameChoice) {
-        this.mode = mode;
-        this.gameChoice = gameChoice;
-    }
 
-    public Game() {
-		super();
-	}
 
 	/**
      *<p>
@@ -194,8 +165,6 @@ import java.sql.Array;
             generateDefenderCombination();
        }else if (this.getMode() == 3 && this.gameChoice == 1) {     	
        		DuelRecherche.duelMode();
-       }else if (this.getMode() == 3 && this.gameChoice == 2) {
-    	   DuelMastermind.duelMode();
        }
        if ("true".equals(Config.getValue("cheatmode"))) {
 	       log.debug(getCombination());
@@ -212,25 +181,53 @@ import java.sql.Array;
 		            continue;
 		        }
 		    }else if (this.getMode() == 2) {
-		    	defender();
+		 
+		    	int digits = parseInt(Config.getValue("nbreChiffres"));
+		    	if (numTry == 0) {
+			    for (int i = 0; i < digits; i++) {
+			    	propositionAI.add("5");
+			    	}
+				    joinedProp = String.join("", propositionAI);
+				    AIProposition = joinedProp.split("");
+				    System.out.println("La proposition de votre adversaire est " +joinedProp);
+		    		}
+		    	}
+		    	// proposition from the last player's response
+		    	Scanner scan = new Scanner(System.in);
+			    System.out.println("Veuillez saisir votre réponse:");
+			    response = scan.nextLine();
+			    responseDefender = response.split("");
+			    
+			    arrayProp.clear();
+			    newProp = 0;
+		    	//check AI Proposition
+		    	for (int i = 0; i < AIProposition.length; i++) {
+			    	if (this.responseDefender[i].contains("+")) {
+			    		newProp = Integer.parseInt(AIProposition[i]);
+			    		newProp = newProp +1;
+			    		arrayProp.add(newProp);
+			    		joinedProp = String.join("", arrayProp.toString()); 
 
-            }if (this.getMode() == 1 || this.getMode() == 2 ) {
-	        	  checkProposition();
-	              displayResponse();
-	              this.numTry++;
-            	}
+			    	}else if (this.responseDefender[i].contains("-")) {
+			    		newProp = Integer.parseInt(AIProposition[i]);
+			    		newProp = newProp -1;
+			    		arrayProp.add(newProp);
+			    		joinedProp = String.join("", arrayProp.toString()); 
+			    	}else {
+			    		System.out.println("Nothing");
+			    	}	
+			    }
+		    	System.out.println("La nouvelle proposition de votre adversaire est " +joinedProp);
+		    	Arrays.fill(AIProposition, null );
+		    	AIProposition = joinedProp.split(""); 
+		    	this.numTry++;
 	        }
-	        if (this.getMode() == 1 || this.getMode() == 2 ) {
-	            if(isResolved()) {
-	                System.out.println("Vous avez gagné !");
-	            } else {
-	                System.out.println("Vous avez perdu !");
-	            }
-	        }
-	        	Menu.displayEndMenu();    
-       }
-}
+		    
+         }
+      	Menu.displayEndMenu(); 
+	  }
         	
+
 	/**
      * Retourne la combination générée
      *
@@ -543,10 +540,7 @@ import java.sql.Array;
      * @return VRAI si CheckNumTry == VRAI et isResolved == faux, sinon retourne FAUX
      */
     private boolean isRunning() {
-        return checkNumTry() && !isResolved();
+        return checkNumTry();
     }
-    
-    abstract void checkProposition();
-    abstract Boolean isResolved();
-    abstract void displayResponse();
+  
 }
