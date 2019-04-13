@@ -93,7 +93,7 @@ import java.sql.Array;
     /**
      * Tableau contenant la proposition du joueur
      */
-    protected String[] AIProposition;
+    protected String AIProposition[];
     
     /**
      * Tableau contenant la proposition du joueur
@@ -194,8 +194,6 @@ import java.sql.Array;
             generateDefenderCombination();
        }else if (this.getMode() == 3 && this.gameChoice == 1) {     	
        		DuelRecherche.duelMode();
-       }else if (this.getMode() == 3 && this.gameChoice == 2) {
-    	   DuelMastermind.duelMode();
        }
        if ("true".equals(Config.getValue("cheatmode"))) {
 	       log.debug(getCombination());
@@ -212,24 +210,47 @@ import java.sql.Array;
 		            continue;
 		        }
 		    }else if (this.getMode() == 2) {
-		    	defender();
-
-            }if (this.getMode() == 1 || this.getMode() == 2 ) {
-	        	  checkProposition();
-	              displayResponse();
-	              this.numTry++;
-            	}
+		 
+		    	int digits = parseInt(Config.getValue("nbreChiffres"));
+		    	if (numTry == 0) {
+		    		for (int i = 0; i < digits; i++) {
+				    	propositionAI.add("5");
+				    	}
+					    joinedProp = String.join("", propositionAI);
+					    AIProposition = joinedProp.split("");
+					    System.out.println("La proposition de votre adversaire est " +joinedProp);
+		    		}
+		    	}
+		    	// proposition from the last player's response
+		    	Scanner scan = new Scanner(System.in);
+			    System.out.println("Veuillez saisir votre réponse:");
+			    response = scan.nextLine();
+			    responseDefender = response.split("");
+			    
+			    arrayProp.removeAll(arrayProp);
+			    newProp = 0;
+		    	//check AI Proposition
+			    for (int i = 0; i < AIProposition.length; i++) {
+			    	if (this.responseDefender[i].contains("+")) {
+			    		newProp = Integer.parseInt(AIProposition[i]) +1;
+			    		arrayProp.add(newProp);
+			    	}else if (this.responseDefender[i].contains("-")) {
+			    		newProp = Integer.parseInt(AIProposition[i]) -1;
+			    		arrayProp.add(newProp);
+			    	}else if (this.responseDefender[i].contains("=")){
+			    		newProp = Integer.parseInt(AIProposition[i]);
+			    		arrayProp.add(newProp);
+			    }
+			    System.out.println("La nouvelle proposition de votre adversaire est " +arrayProp);
+		    	Arrays.fill(AIProposition, null);
+		    	this.numTry++;
 	        }
-	        if (this.getMode() == 1 || this.getMode() == 2 ) {
-	            if(isResolved()) {
-	                System.out.println("Vous avez gagné !");
-	            } else {
-	                System.out.println("Vous avez perdu !");
-	            }
-	        }
-	        	Menu.displayEndMenu();    
+		    
+         }
+      	 Menu.displayEndMenu(); 
        }
-}
+    }
+
         	
 	/**
      * Retourne la combination générée

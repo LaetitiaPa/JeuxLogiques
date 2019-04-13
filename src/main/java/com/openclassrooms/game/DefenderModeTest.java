@@ -198,7 +198,7 @@ public class DefenderModeTest {
 			    response = scan.nextLine();
 			    responseDefender = response.split("");
 			    
-			    arrayProp.clear();
+			    arrayProp.removeAll(arrayProp);
 			    newProp = 0;
 		    	//check AI Proposition
 		    	for (int i = 0; i < AIProposition.length; i++) {
@@ -224,7 +224,7 @@ public class DefenderModeTest {
 	        }
 		    
          }
-      	Menu.displayEndMenu(); 
+      	 Menu.displayEndMenu(); 
 	  }
         	
 
