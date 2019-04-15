@@ -45,6 +45,12 @@ import java.sql.Array;
      */
     protected int combination = 0;
     
+    
+    /**
+     * La combinaison secrète pour les modes challenger et defender
+     * @see Game#getCombination()
+     */
+    protected ArrayList<Integer> defenderCombination = new ArrayList<Integer>();
 
     /**
      * La combinaison secrète de l'AI pour le mode Duel: Peut être récupérée
@@ -79,7 +85,7 @@ import java.sql.Array;
     /**
      * Liste contenant la proposition de l'AI
      */
-    protected ArrayList<String> propositionAI = new ArrayList<String>();
+    protected ArrayList<Integer> propositionAI = new ArrayList<Integer>();
     
     /**
      * Tableau contenant la proposition de l'AI
@@ -139,7 +145,7 @@ import java.sql.Array;
    /**
     *  valeur de la proposition de l'AI
     */
-   protected String joinedProp = "";
+   protected ArrayList<Integer> joinedProp = new ArrayList<Integer>();
 
     /**
      * valeur du nombre de tours
@@ -186,70 +192,82 @@ import java.sql.Array;
      *  Affiche le menu de fin
      *</p>
      */
-    public void run() {
-        log.info("Début du jeu");
-        if(getMode() == 1) {
+    @SuppressWarnings("unlikely-arg-type")
+	public void run() {
+       log.info("Début du jeu");
+       
+       if(getMode() == 1) {
         	generateChallengerCombination();
-       }else if (getMode() == 2) {
+       } else if (getMode() == 2) {
             generateDefenderCombination();
-       }else if (this.getMode() == 3 && this.gameChoice == 1) {     	
-       		DuelRecherche.duelMode();
+       } else if (this.getMode() == 3) {     	
+    	   DuelRecherche.duelMode();
        }
+        
        if ("true".equals(Config.getValue("cheatmode"))) {
 	       log.debug(getCombination());
 	       System.out.println(getCombination());   
+       }
            
-	   while (isRunning()) {
+	   while (numTry < parseInt(Config.getValue("nbreChiffres"))) {
 		    this.response = "";
 		
 		    if (this.getMode() == 1) {
 		        try {
 		            challenger();
+		            checkProposition();
+		            displayResponse();
+		            this.numTry++;
 		        } catch (GameException e) {
 		            System.out.println(e.toString());
 		            continue;
 		        }
-		    }else if (this.getMode() == 2) {
-		 
+		    } else if (this.getMode() == 2) {
 		    	int digits = parseInt(Config.getValue("nbreChiffres"));
 		    	if (numTry == 0) {
 		    		for (int i = 0; i < digits; i++) {
-				    	propositionAI.add("5");
-				    	}
-					    joinedProp = String.join("", propositionAI);
-					    AIProposition = joinedProp.split("");
-					    System.out.println("La proposition de votre adversaire est " +joinedProp);
-		    		}
-		    	}
-		    	// proposition from the last player's response
+				    	propositionAI.add(5);
+			    	}
+				    System.out.println("La proposition de votre adversaire est " + propositionAI);
+	    		}
 		    	Scanner scan = new Scanner(System.in);
-			    System.out.println("Veuillez saisir votre réponse:");
+		    	System.out.println("Veuillez saisir votre réponse:");
 			    response = scan.nextLine();
 			    responseDefender = response.split("");
 			    
 			    arrayProp.removeAll(arrayProp);
-			    newProp = 0;
-		    	//check AI Proposition
-			    for (int i = 0; i < AIProposition.length; i++) {
-			    	if (this.responseDefender[i].contains("+")) {
-			    		newProp = Integer.parseInt(AIProposition[i]) +1;
-			    		arrayProp.add(newProp);
-			    	}else if (this.responseDefender[i].contains("-")) {
-			    		newProp = Integer.parseInt(AIProposition[i]) -1;
-			    		arrayProp.add(newProp);
-			    	}else if (this.responseDefender[i].contains("=")){
-			    		newProp = Integer.parseInt(AIProposition[i]);
-			    		arrayProp.add(newProp);
+			    newProp = 0;		    		  		    
+			   		    	//check AI Proposition
+			    for (int i = 0; i < propositionAI.size(); i++) {	
+		    		newProp = propositionAI.get(i);
+
+			    	if (this.responseDefender[i].equals("+")) {		    		
+			    		newProp += 1;
+			    	} else if (this.responseDefender[i].equals("-")) {
+			    		newProp -= 1;	    			 
+			    	} 	
+			    	
+		    		arrayProp.add(newProp);
 			    }
-			    System.out.println("La nouvelle proposition de votre adversaire est " +arrayProp);
-		    	Arrays.fill(AIProposition, null);
-		    	this.numTry++;
-	        }
+			    // proposition from the last player's response
+				this.numTry++;
+			    System.out.println("Essai n° " +numTry);
+			    System.out.println("La nouvelle proposition de votre adversaire est " + arrayProp);
+			    propositionAI.removeAll(propositionAI);
+			    propositionAI.addAll(arrayProp);
+			    System.out.println("Combinaison defenseur : "+defenderCombination);
+			    System.out.println("Proposition joeur : "+arrayProp);
+	    	}
 		    
-         }
-      	 Menu.displayEndMenu(); 
-       }
-    }
+        }
+	    /*if (getMode() == 1 && isResolved()) {
+	       System.out.println("Vous avez gagné !");
+	    } else {
+	       System.out.println("Vous avez perdu !");
+	    } */  
+  	 	Menu.displayEndMenu(); 
+   }
+   
 
         	
 	/**
@@ -285,7 +303,7 @@ import java.sql.Array;
         solution = solution_.split("");
 
         return combination;
-}
+    }
 
     /**
      *  Saisi de la combinaison secrète par le joueur en mode duel
@@ -332,6 +350,7 @@ import java.sql.Array;
             Scanner scan = new Scanner(System.in);
             try {
                 combination = scan.nextInt();
+                defenderCombination.add(combination);
                 isNumber = true;
             }
             catch(InputMismatchException inputException) {
