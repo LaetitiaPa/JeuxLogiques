@@ -8,7 +8,7 @@ public class Main {
      */
     private final static Logger log = Logger.getLogger(String.valueOf(Main.class));
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws GameException {
         log.info("Lancement du jeu");
          Menu.display();
     }

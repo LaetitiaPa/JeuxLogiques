@@ -22,7 +22,6 @@ import java.sql.Array;
  * <li>Une proposition entrée par l'adversaire.</li>
  * <li>Une réponse affichée.</li>
  * <li>Un nombre d'essai.</li>
- * <li>Un choix du jeu</li>
  * <li>Un choix du mode</li>
  * </ul>
  * </p>
@@ -30,154 +29,150 @@ import java.sql.Array;
   abstract class Game {
 
     /**
-     * Création de l'instance Logger en utilisant la méthode getLogger()
+     * Création de l'instance Logger pour la classe Game en utilisant la méthode getLogger()
      */
     private final static Logger log = Logger.getLogger(String.valueOf(Game.class));
-
-    /**
-     * Le choix du jeu. Peut être réupéré
-     */
-    protected int gameChoice;
     
     /**
-     * La combinaison secrète pour les modes challenger et defender
+     * La combinaison secrète (mode Challenger et Defender)
      * @see Game#getCombination()
      */
-    protected int combination = 0;
-    
+    public static String combination = "";
     
     /**
-     * La combinaison secrète pour les modes challenger et defender
+     * La combinaison secrète (mode Challenger et Defender): Peut être récupérée
      * @see Game#getCombination()
      */
-    protected ArrayList<Integer> defenderCombination = new ArrayList<Integer>();
+    protected static ArrayList<Integer> defenderCombination = new ArrayList<Integer>();
 
     /**
-     * La combinaison secrète de l'AI pour le mode Duel: Peut être récupérée
+     * La combinaison secrète du CPU (mode Duel): Peut être récupérée
      * @see Game#getDuelCombinationAI()
      */
-    protected int duelCombinationAI = 0;
+    protected static int duelCombinationAI = 0;
     
     /**
-     * La combinaison secrète du joueur pour le mode Duel: Peut être récupérée
+     * La combinaison secrète du joueur (mode Duel): Peut être récupérée
      * @see Game#getDuelCombinationPlayer()
      */
-    protected int duelCombinationPlayer = 0;
+    protected static int duelCombinationPlayer = 0;
 
     /**
      * La valeur de la proposition: Peut être récupérée
      * @see Game#getProp()
      */
-    protected  int prop;
+    protected static  String prop = "";
     
     /**
-     * La valeur de la proposition: Peut être récupérée
-     * @see Game#getProp()
+     * La valeur de la proposition (mode Duel): Peut être récupérée
+     * @see Game#getPlayerProp()
      */
-    protected  int playerProp;
+    protected static int playerProp;
     
     /**
-     * La valeur de la proposition: Peut être récupérée
-     * @see Game#getProp()
+     * La valeur de la proposition (mode Duel): Peut être récupérée
+     * @see Game#getAIProp()
      */
-    protected  int AIProp;
+    public static int AIProp;
 
     /**
-     * Liste contenant la proposition de l'AI
+     * Liste contenant la proposition du CPU
      */
-    protected ArrayList<Integer> propositionAI = new ArrayList<Integer>();
+    protected static ArrayList<Integer> propositionAI = new ArrayList<Integer>();
     
     /**
-     * Tableau contenant la proposition de l'AI
+     * Liste contenant la proposition du CPU après la réponse du joueur (mode Defender et Duel)
      */
-    protected ArrayList<Integer> arrayProp = new ArrayList<Integer>();
-    
-    /**
-     * Tableau contenant la proposition du joueur
-     */
-    protected String[] proposition;
-    /**
-     * Tableau contenant la proposition du joueur
-     */
-    protected String AIProposition[];
+    protected static ArrayList<Integer> arrayProp = new ArrayList<Integer>();
     
     /**
      * Tableau contenant la proposition du joueur
      */
-    protected String[] playerProposition;
+    protected static String[] proposition;
+    /**
+     * Tableau contenant la proposition du CPU pour le mode Duel
+     */
+    protected static String AIProposition[];
+    
+    /**
+     * Tableau contenant la proposition du joueur pour le mode Duel
+     */
+    protected static String[] playerProposition;
     
     
     /**
      * Tableau contenant la solution du jeu 
      */
-    protected String[] solution;
+    protected static String[] solution;
 
     /**
-     * Tableau contenant la solution du jeu pour le mode Duel / Player
+     * Tableau contenant la solution du joueur du jeu (mode Duel)
      */
-    protected String[] solutionPlayer;
+    protected static String[] solutionPlayer;
     
     /**
-     * Tableau contenant la solution du jeu pour le mode Duel / AI
+     * Tableau contenant la solution du CPU (mode Duel)
      */
-    protected String[] solutionAI;
+    protected static String[] solutionAI;
 
     /**
-     * valeur de la réponse retournée
+     * Valeur de la réponse générée par la méthode checkProposition()
      */
-    protected String response;
+    protected static String response;
     
     /**
-     * Liste contenant la proposition du défenseur
+     * Liste contenant la proposition du défenseur générée par la méthode playerDefenderResponse()
      */
-    protected String[] responseDefender;
+    protected static String[] responseDefender;
     
    /**
-    *  valeur de la réponse du joueur
+    *  Valeur de la réponse générée par la méthode checkPlayerProposition()
     */
-   protected String playerResponse;
+   protected static String playerResponse;
    
    /**
-    *  valeur de la réponse de l'AI 
+    *  Valeur de la réponse de l'AI (mode Duel)
     */
    protected String aiResponse;
    
    /**
-    *  valeur de la proposition de l'AI
+    *  Valeur de la réponse du joueur saisie (mode Defender)
+    */
+   protected static String playerResp;
+   
+   /**
+    *  Valeur de la proposition de l'AI
     */
    protected ArrayList<Integer> joinedProp = new ArrayList<Integer>();
 
     /**
-     * valeur du nombre de tours
+     * Valeur du nombre de tours
      */
-    protected int numTry;
+    protected static int numTry;
     
     /**
-     * valeur du nombre de tours
+     * Valeur de la nouvelle proposition du CPU après indications
      */
-    protected int newProp = 0;
+    protected static int newProp = 0;
 
     /**
      * La valeur du mode: Peut être récupérée
      * @see Game#getMode()
      */
     protected int mode;
-
+    
     /**
      * Constructeur Game
      * <p>
-     * A la construction d'un objet Game, le "mode" et le jeu choisis sont attendus en paramètre
+     * A la construction d'un objet Game, le choix du mode est attendu en paramètre
      * vide.
      * </p>
      *
      * @param mode
      *            Le mode du jeu choisi
-     * @param gameChoice
-     *            Le jeu choisi
      */
-    public Game(int mode, int gameChoice) {
+    public Game(int mode) {
         this.mode = mode;
-        this.gameChoice = gameChoice;
     }
 
     public Game() {
@@ -186,192 +181,66 @@ import java.sql.Array;
 
 	/**
      *<p>
-     *  Affiche le jeu sélectionné selon le mode choisi
+     *  Lance une partie selon le mode choisi
      *  Gère les conditions de sorties du jeu
      *  Affiche le message de fin de partie
      *  Affiche le menu de fin
      *</p>
+	 * @throws GameException 
      */
-    @SuppressWarnings("unlikely-arg-type")
-	public void run() {
+	public void run() throws GameException {
        log.info("Début du jeu");
        
        if(getMode() == 1) {
-        	generateChallengerCombination();
+        	Challenger.generateChallengerCombination();
        } else if (getMode() == 2) {
-            generateDefenderCombination();
+    	   Defender.defenderPlayerCombination();
        } else if (this.getMode() == 3) {     	
     	   DuelRecherche.duelMode();
        }
-        
+       
        if ("true".equals(Config.getValue("cheatmode"))) {
 	       log.debug(getCombination());
 	       System.out.println(getCombination());   
        }
            
-	   while (numTry < parseInt(Config.getValue("nbreChiffres"))) {
-		    this.response = "";
+	   while (isRunning()) {
+		   response = "";
 		
 		    if (this.getMode() == 1) {
 		        try {
-		            challenger();
+		            Challenger.challenger();
 		            checkProposition();
 		            displayResponse();
-		            this.numTry++;
 		        } catch (GameException e) {
 		            System.out.println(e.toString());
 		            continue;
 		        }
 		    } else if (this.getMode() == 2) {
-		    	int digits = parseInt(Config.getValue("nbreChiffres"));
-		    	if (numTry == 0) {
-		    		for (int i = 0; i < digits; i++) {
-				    	propositionAI.add(5);
-			    	}
-				    System.out.println("La proposition de votre adversaire est " + propositionAI);
-	    		}
-		    	Scanner scan = new Scanner(System.in);
-		    	System.out.println("Veuillez saisir votre réponse:");
-			    response = scan.nextLine();
-			    responseDefender = response.split("");
-			    
-			    arrayProp.removeAll(arrayProp);
-			    newProp = 0;		    		  		    
-			   		    	//check AI Proposition
-			    for (int i = 0; i < propositionAI.size(); i++) {	
-		    		newProp = propositionAI.get(i);
-
-			    	if (this.responseDefender[i].equals("+")) {		    		
-			    		newProp += 1;
-			    	} else if (this.responseDefender[i].equals("-")) {
-			    		newProp -= 1;	    			 
-			    	} 	
-			    	
-		    		arrayProp.add(newProp);
-			    }
-			    // proposition from the last player's response
-				this.numTry++;
-			    System.out.println("Essai n° " +numTry);
-			    System.out.println("La nouvelle proposition de votre adversaire est " + arrayProp);
-			    propositionAI.removeAll(propositionAI);
-			    propositionAI.addAll(arrayProp);
-			    System.out.println("Combinaison defenseur : "+defenderCombination);
-			    System.out.println("Proposition joeur : "+arrayProp);
-	    	}
-		    
-        }
-	    /*if (getMode() == 1 && isResolved()) {
-	       System.out.println("Vous avez gagné !");
-	    } else {
-	       System.out.println("Vous avez perdu !");
-	    } */  
-  	 	Menu.displayEndMenu(); 
-   }
-   
-
-        	
-	/**
-     * Retourne la combination générée
-     *
-     * @return La combinaison générée par la méthode ThreadLocalRandom
-     */
-    public int generateAICombinationDuel() {
-    	int digits = parseInt(Config.getValue("nbreChiffres"));
-    	int minimum = (int) Math.pow(10, digits - 1); // minimum value with 2 digits is 10 (10^1)
-        int maximum = (int) Math.pow(10, digits) - 1; // maximum value with 2 digits is 99 (10^2 - 1)
-        Random random = new Random();
-        duelCombinationAI = minimum + random.nextInt((maximum - minimum) + 1);
-        String solution_ = Integer.toString(duelCombinationAI);
-        solutionAI = solution_.split("");
-
-        return duelCombinationAI;
-}
-    
-    /**
-     * Retourne la combination générée
-     *
-     * @return La combinaison générée par la méthode ThreadLocalRandom
-     */
-    
-    public int generateChallengerCombination() {
-    	int digits = parseInt(Config.getValue("nbreChiffres"));
-    	int minimum = (int) Math.pow(10, digits - 1); // minimum value with 2 digits is 10 (10^1)
-        int maximum = (int) Math.pow(10, digits) - 1; // maximum value with 2 digits is 99 (10^2 - 1)
-        Random random = new Random();
-        combination = minimum + random.nextInt((maximum - minimum) + 1);
-        String solution_ = Integer.toString(combination);
-        solution = solution_.split("");
-
-        return combination;
-    }
-
-    /**
-     *  Saisi de la combinaison secrète par le joueur en mode duel
-     *  La combinaison entrée devient la solution de la partie en cours
-     *
-     * @throws GameException si les chiffres saisis sont supérieurs ou inférieurs au nombre attendu
-     */
-    public void generatePlayerCombinationDuel() {
-        int nbreChiffres = parseInt(Config.getValue("nbreChiffres"));
-        System.out.println("Veuillez saisir une combinaison de " + nbreChiffres + " chiffres ");
-        boolean demandeSaisie = true;
-        boolean isNumber;
-
-        while (demandeSaisie) {
-            Scanner scan = new Scanner(System.in);
-            try {
-                duelCombinationPlayer = scan.nextInt();
-                isNumber = true;
-            }
-            catch(InputMismatchException inputException) {
-                System.out.println("Veuillez saisir un chiffre !");
-                isNumber = false;
-
-            }if(isNumber) {
-                this.solutionPlayer = Integer.toString(duelCombinationPlayer).split("");
-                demandeSaisie = checkNumberPlayer(nbreChiffres, demandeSaisie, duelCombinationPlayer);
-            }
-        }
-    }
-   
-    /**
-     *  Saisi de la combinaison secrète par le joueur pour les modes Challenger et Défenseur
-     *  La combinaison entrée devient la solution de la partie en cours
-     *
-     * @throws GameException si les chiffres saisis sont supérieurs ou inférieurs au nombre attendu
-     */
-    public void generateDefenderCombination() {
-        int nbreChiffres = parseInt(Config.getValue("nbreChiffres"));
-        System.out.println("Veuillez saisir une combinaison de " + nbreChiffres + " chiffres ");
-        boolean demandeSaisie = true;
-        boolean isNumber;
-
-        while (demandeSaisie) {
-            Scanner scan = new Scanner(System.in);
-            try {
-                combination = scan.nextInt();
-                defenderCombination.add(combination);
-                isNumber = true;
-            }
-            catch(InputMismatchException inputException) {
-                System.out.println("Veuillez saisir un chiffre !");
-                isNumber = false;
-
-            }if(isNumber) {
-                this.solution = Integer.toString(combination).split("");
-                demandeSaisie = checkNumber(nbreChiffres, demandeSaisie, combination);
-            }
-        }
-    }
-
+		    	Defender.generateAIProposition();
+	    		Defender.playerDefenderResponse();
+	    		Defender.displayNewAIProposition();
+		    }
+		    numTry++;
+		    numTryLeft();
+		}
+	    if (isResolved() && this.mode != 3) {
+			System.out.println("Bravo !!! vous avez gagné !");
+		} else if (!isResolved() && this.mode != 3) {
+			System.out.println("Oh ! Vous avez perdu !");
+		}
+	   	Menu.displayEndMenu();  
+	}
+	  
+  	 	
     /**
      * Combinaison de type Integer convertie en type String pour obtenir sa taille
      * Affiche un message demandant la saisie d'une nouvelle combinaison si tailleNombre != nbChiffres
      * 
      * @return true
      */
-    private boolean checkNumber(int nbreChiffres, boolean demandeSaisie, Integer combination) {
-        int tailleNbre = combination.toString().length();
+    protected static boolean checkNumber(int nbreChiffres, boolean demandeSaisie, String prop) {
+        int tailleNbre = prop.length();
         if (tailleNbre != nbreChiffres) {
             System.out.println("Merci de ressaisir une combinaison de " + nbreChiffres);
         } else if(tailleNbre == nbreChiffres) {
@@ -380,119 +249,36 @@ import java.sql.Array;
         return demandeSaisie;
     }
     
-	/**
-	 * Utilisée pour le mode duel
-	 * Combinaison de type Integer convertie en type String pour obtenir sa taille
-	 * Affiche un message demandant la saisie d'une nouvelle combinaison si tailleNombre != nbChiffres
-	 * 
-	 * @return true
-	 */
-    private boolean checkNumberPlayer(int nbreChiffres, boolean demandeSaisie, Integer duelCombinationPlayer) {
-        int tailleNbre = duelCombinationPlayer.toString().length();
-        if (tailleNbre != nbreChiffres) {
-            System.out.println("Merci de ressaisir une combinaison de " + nbreChiffres);
-        } else if(tailleNbre == nbreChiffres) {
-            demandeSaisie = false;
-        }
-        return demandeSaisie;
-    }
-
-    /**
-     *  Saisi de la proposition par le joueur
-     *  La saisie devient la proposition
-     *
-     * @throws GameException si les chiffres saisis sont supérieurs ou inférieurs au nombre attendu
-     */
-    public void challenger() throws GameException  {
-        int nbreChiffres = parseInt(Config.getValue("nbreChiffres"));
-        System.out.println("A vous de jouer !");
-        System.out.println(this.numTry);
-        Scanner reader = new Scanner(System.in);
-        prop = reader.nextInt();
-        int tailleNbre = Integer.toString(prop).length();
-        if ( nbreChiffres != tailleNbre){
-            throw new GameException("Une combinaison à  " + nbreChiffres + " chiffres est attendue");
-        }
-        this.proposition = Integer.toString(prop).split("");
-        System.out.println("La proposition du joueur est : " + prop);
+    protected static void numTryLeft() {
+    	int nbTryLeft = parseInt(Config.getValue("nbessai"));
+	    nbTryLeft -= numTry;
+	    System.out.println("Nombre d'essais restant: " + nbTryLeft) ;
     }
     
-    
     /**
-     *  Saisi de la proposition par le joueur
-     *  La saisie devient la proposition
-     *
-     * @throws GameException si les chiffres saisis sont supérieurs ou inférieurs au nombre attendu
-     */
-    public void challengerDuel() throws GameException  {
-        int nbreChiffres = parseInt(Config.getValue("nbreChiffres"));
-        System.out.println("A vous de jouer !");
-        System.out.println(this.numTry);
-        Scanner reader = new Scanner(System.in);
-        playerProp = reader.nextInt();
-        int tailleNbre = Integer.toString(playerProp).length();
-        if (nbreChiffres != tailleNbre){
-            throw new GameException("Une combinaison à  " + nbreChiffres + " chiffres est attendue");
-        }
-        this.playerProposition = Integer.toString(playerProp).split("");
-        System.out.println("La proposition du joueur est : " + playerProp);
-    }
-
-    /**
-     *  Génération de la proposition de l'AI via la méthode ThreadLocalRandom
-     *  La combinaison générée devient la proposition
-     */
-    public void defender() {
-    	int digits = parseInt(Config.getValue("nbreChiffres"));
-    	int minimum = (int) Math.pow(10, digits - 1); // minimum value with 2 digits is 10 (10^1)
-        int maximum = (int) Math.pow(10, digits) - 1; // maximum value with 2 digits is 99 (10^2 - 1)
-        Random random = new Random();
-        prop = minimum + random.nextInt((maximum - minimum) + 1);
-        String prop_ = Integer.toString(prop);
-        proposition = prop_.split("");
-        System.out.println("La proposition de l'ordinateur est : " + prop);
-    }
-   
-    
-    /**
-     *  Génération de la proposition de l'AI via la méthode ThreadLocalRandom
-     *  La combinaison générée devient la proposition
-     */
-    public void defenderDuel() {
-    	int digits = parseInt(Config.getValue("nbreChiffres"));
-    	int minimum = (int) Math.pow(10, digits - 1); // minimum value with 2 digits is 10 (10^1)
-        int maximum = (int) Math.pow(10, digits) - 1; // maximum value with 2 digits is 99 (10^2 - 1)
-        Random random = new Random();
-        AIProp = minimum + random.nextInt((maximum - minimum) + 1);
-        String prop_ = Integer.toString(AIProp);
-        AIProposition = prop_.split("");
-        System.out.println("La proposition de l'ordinateur est : " + AIProp);
-    }
-   
-    /**
-     * Retourne la proposion saisie
+     * Retourne la proposition saisie
      *
      * @return la chaîne de caractère correspondant à la proposition entrée
      */
-    public int getProp() {
+    public static String getProp() {
         return prop;
     }
     
     /**
-     * Retourne la proposion saisie
+     * Retourne la proposion saisie du joueur (mode Duel)
      *
      * @return la chaîne de caractère correspondant à la proposition entrée
      */
-    public int getPlayerProp() {
+    public static int getPlayerProp() {
         return playerProp;
     }
     
     /**
-     * Retourne la proposion saisie
+     * Retourne la proposition du CPU (mode Duel)
      *
-     * @return la chaîne de caractère correspondant à la proposition entrée
+     * @return la chaîne de caractère correspondant à la proposition du CPU
      */
-    public int getAIProp() {
+    public static int getAIProp() {
         return AIProp;
     }
 
@@ -505,44 +291,36 @@ import java.sql.Array;
         return mode;
     }
     
-    /**
-     * Retourne le jeux choisi
-     *
-     * @return la chaîne de caractère correspondant au jeu sélectionné
-     */
-    public int getGameChoice() {
-        return gameChoice;
-    }
     
     /**
-     * Retourne la combinaison saisie pour le mode Challenger et Défenseur
+     * Retourne la combinaison saisie (mode Challenger et Defender)
      *
      * @return la chaîne de caractère correspondant à la combinaison saisie
      */
-    public int getCombination() {
+    public String getCombination() {
     	return combination;
     }
     
     /**
-     * Retourne la combinaison saisie par l'ordinateur
+     * Retourne la combinaison saisie par le CPU (mode Duel)
      *
      * @return la chaîne de caractère correspondant à la combinaison saisie
      */
-    public int getDuelCombinationAI() {
+    public static int getDuelCombinationAI() {
         return duelCombinationAI;
     }
     
     /**
-     * Retourne la combinaison saisie par le joueur
+     * Retourne la combinaison saisie par le joueur (mode Duel)
      *
      * @return la chaîne de caractère correspondant à la combinaison saisie
      */
-    public int getDuelCombinationPlayer() {
+    public static int getDuelCombinationPlayer() {
         return duelCombinationPlayer;
     }
     
     /**
-     * Retourne la réponse pour le mode Challenger et Défenseur
+     * Retourne la réponse (mode Challenger et Défenseur)
      *
      * @return la chaîne de caractère correspondant à la réponse saisie
      */
@@ -551,16 +329,16 @@ import java.sql.Array;
     }
     
     /**
-     * Retourne la réponse de l'ordinateur
+     * Retourne la réponse du CPU
      *
-     * @return la chaîne de caractère correspondant à la réponse de l'ordinateur
+     * @return la chaîne de caractère correspondant à la réponse du CPU
      */
     public String getAIResponse() {
         return aiResponse;
     }
     
     /**
-     * Retourne la réponse du joueur
+     * Retourne la réponse du joueur (mode Duel)
      *
      * @return la chaîne de caractère correspondant à la réponse saisie par le joueur
      */
@@ -574,7 +352,7 @@ import java.sql.Array;
      * @return vrai si numTry < MAX_NUM_TRY, sinon retourne faux
      */
     private boolean checkNumTry() {
-        return this.numTry < parseInt(Config.getValue("nbreChiffres"))? true : false;
+        return numTry < parseInt(Config.getValue("nbessai"))? true : false;
     }
 
     /**

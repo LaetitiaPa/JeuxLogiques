@@ -43,11 +43,6 @@ public class Menu {
     /**
      *
      */
-    private static final List<Integer> gameChoices = Arrays.asList(1, 2, 3);
-
-    /**
-     *
-     */
     private static final List<Integer> modeChoices = Arrays.asList(1, 2, 3);
 
     /**
@@ -62,14 +57,11 @@ public class Menu {
      * TANT QUE la valeur saisie n'est pas dans la liste, on affiche le menu correspondant
      *
      * Enfin on appelle la méthode runGame() qui instancie le jeu choisi
+     * @throws GameException 
      *
      */
-    public static void display() {
+    public static void display() throws GameException {
     	log.trace("Début de l'utilisation de la méthode display");
-        while (!gameChoices.contains(gameChoice)) {
-            askGame();
-        }
-
         while (!modeChoices.contains(modeChoice)){
             askMode();
         }
@@ -78,53 +70,13 @@ public class Menu {
 
     /**
      * TANT QUE la valeur saisie n'est pas dans la liste, on affiche le menu
+     * @throws GameException 
      *
      */
-    public static void displayEndMenu() {
+    public static void displayEndMenu() throws GameException {
     	log.trace("Début de l'utilisation de la méthode displayEndMenu");
         while(!endGameChoices.contains(endGameChoice)) {
             endGameMenu();
-        }
-    }
-
-    /**
-     * Menu des jeux proposant les possibilités suivantes:
-     *
-     * 1/ Plus ou Moins
-     * 2/ Mastermind
-     * 3/ Quitter
-     *
-     * Stock la saisie du joueur dans la variable gameChoice
-     * Affiche le choix
-     * @param
-     */
-    public static void askGame() {
-    	log.info("Lancement du menu des jeux");
-        Scanner input = new Scanner(System.in);
-        System.out.println("Veuillez choisir un jeu :");
-        System.out.println(" 1- Plus ou Moins");
-        System.out.println(" 2- Mastermind");
-        System.out.println(" 3- Quitter");
-
-        try {
-        	gameChoice = input.nextInt();
-        } catch(InputMismatchException inputException) {
-        	log.warn("Erreur de saisie");
-            System.out.println("Veuillez saisir un chiffre !");
-        }
-
-        switch(gameChoice) {
-            case 1:
-                System.out.println("Vous avez choisi comme jeu : Recherche +/-");
-                break;
-
-            case 2:
-                System.out.println("Vous avez choisi comme jeu : Mastermind");
-                break;
-
-            case 3:
-                System.out.println("Vous avez choisi de quitter le jeu");
-                break;
         }
     }
 
@@ -138,9 +90,10 @@ public class Menu {
      * Stock la saisie du joueur dans la variable modeChoice
      */
     public static void askMode() {
-    	log.info("Lancement du menu des modes");
+    	log.info("Lancement du menu du choix du mode");
         Scanner input = new Scanner(System.in);
-        System.out.println("Veuillez choisir un mode");
+        System.out.println("Jeu de Recherche +/-");
+        System.out.println("Veuillez choisir un mode: ");
         System.out.println("1- Challenger");
         System.out.println("2- Défenseur");
         System.out.println("3- Duel");
@@ -160,18 +113,14 @@ public class Menu {
      * 1/ Instancie la classe MoreLess
      * 2/ Instancie la classe Mastermind
      * 3/ La méthode quit() est exécutée
+     * @throws GameException 
      */
-    private static void runGame() {
-        if (gameChoice == 1) {
-            MoreLess moreLess = new MoreLess(modeChoice, gameChoice);
-            moreLess.run();
-
-        }else if (gameChoice == 2) {
-            Mastermind mastermind = new Mastermind(modeChoice, gameChoice);
-            mastermind.run();
-
-        }else if(gameChoice == 3) {
+    private static void runGame() throws GameException {
+    	if (gameChoice == 3) {
             quit();
+        } else {
+        	MoreLess moreLess = new MoreLess(modeChoice);
+            moreLess.run();
         }
     }
 
@@ -185,18 +134,19 @@ public class Menu {
     }
 
     /**
-     * Menu de fin de partie proposant les choix suivantes:
+     * Menu de fin de partie proposant les choix suivants:
      *
      * 1/ Rejouer
      * 2/ Changer de jeu
      * 3/ Quitter
      *
      * Stock la saisie du joueur dans la variable endGameChoice
+     * @throws GameException 
      */
-    public static void endGameMenu() {
+    public static void endGameMenu() throws GameException {
         Scanner input = new Scanner(System.in);
         System.out.println(" 1- Rejouer");
-        System.out.println(" 2- Changer de jeu");
+        System.out.println(" 2- Changer de mode");
         System.out.println(" 3- Quitter");
 
         try {
@@ -209,16 +159,16 @@ public class Menu {
 
     /**
      * Lance les méthodes correspondant au choix saisi dans la méthode endGameMenu()
+     * @throws GameException 
      */
-    public static void endChoiceMenu() {
-        if(endGameChoice == 1) {
+    public static void endChoiceMenu() throws GameException {
+        if (endGameChoice == 1) {
             runGame();
-        }else if(endGameChoice == 2) {
-            askGame();
+        } else if (endGameChoice == 2) {
             askMode();
             runGame();
-        }else if(endGameChoice == 3) {
-            System.exit(0);
+        } else if (endGameChoice == 3) {
+            quit();
         }
     }
 }

@@ -11,7 +11,7 @@ import org.apache.log4j.Logger;
 public class Config {
 
     /**
-     * Création de l'instance Logger en utilisant la méthode getLogger()
+     * Création de l'instance Logger de la classe Config en utilisant la méthode getLogger()
      */
     private final static Logger log = Logger.getLogger(String.valueOf(Config.class));
 
