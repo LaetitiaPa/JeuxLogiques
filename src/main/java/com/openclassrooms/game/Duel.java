@@ -8,7 +8,7 @@ import java.util.Scanner;
 
 import org.apache.log4j.Logger;
 
-abstract class Duel extends Game {
+public class Duel extends Game {
 	
 	/**
      * Création de l'instance Logger pour la classe Duel en utilisant la méthode getLogger()
@@ -133,5 +133,30 @@ abstract class Duel extends Game {
         }
         return demandeSaisie;
     }
+
+	@Override
+	void checkProposition() {
+		if (Duel.getDuelCombinationAI() == Duel.getPlayerProp()){
+			System.out.println("Vous avez gagné contre l'ordinateur");
+			winner = true;
+		} else if (Duel.getAIProp() == Duel.getDuelCombinationPlayer() && numTry > parseInt(Config.getValue("nbessai"))){
+			System.out.println("Vous avez perdu contre l'ordinateur");
+			winner = true;
+		}
+
+	}
+
+
+	@Override
+	void displayResponse() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	Boolean isResolved() {
+		// TODO Auto-generated method stub
+		return null;
+	}
 
 }

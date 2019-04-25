@@ -33,17 +33,12 @@ public class Menu {
     /**
      *
      */
-    public static int gameChoice;
-
-    /**
-     *
-     */
     private static int modeChoice;
 
     /**
      *
      */
-    private static final List<Integer> modeChoices = Arrays.asList(1, 2, 3);
+    private static final List<Integer> modeChoices = Arrays.asList(1, 2, 3, 4);
 
     /**
      *
@@ -65,7 +60,7 @@ public class Menu {
         while (!modeChoices.contains(modeChoice)){
             askMode();
         }
-            runGame();
+        runGame();
     }
 
     /**
@@ -93,7 +88,7 @@ public class Menu {
     	log.info("Lancement du menu du choix du mode");
         Scanner input = new Scanner(System.in);
         System.out.println("Jeu de Recherche +/-");
-        System.out.println("Veuillez choisir un mode: ");
+        System.out.println("Veuillez choisir un mode ou entrez 4 pour quitter: ");
         System.out.println("1- Challenger");
         System.out.println("2- Défenseur");
         System.out.println("3- Duel");
@@ -116,12 +111,11 @@ public class Menu {
      * @throws GameException 
      */
     private static void runGame() throws GameException {
-    	if (gameChoice == 3) {
-            quit();
-        } else {
-        	MoreLess moreLess = new MoreLess(modeChoice);
-            moreLess.run();
-        }
+      	MoreLess moreLess = new MoreLess(modeChoice);
+      	if (modeChoice == 4) {
+      		quit();
+      	}
+        moreLess.run(); 
     }
 
     /**

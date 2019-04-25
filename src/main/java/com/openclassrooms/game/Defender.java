@@ -1,20 +1,15 @@
 package com.openclassrooms.game;
 
-import static java.lang.Integer.parseInt;
-
-import java.util.ArrayList;
 import java.util.InputMismatchException;
-import java.util.Random;
 import java.util.Scanner;
-
 import org.apache.log4j.Logger;
 
 
 
-abstract class Defender extends Game{
+public class Defender extends Game{
 	
 	 /**
-     * Création de l'instance Logger pour la classe Game en utilisant la méthode getLogger()
+     * Création de l'instance Logger pour la classe Defender en utilisant la méthode getLogger()
      */
     private final static Logger log = Logger.getLogger(String.valueOf(Defender.class));
 
@@ -26,10 +21,10 @@ abstract class Defender extends Game{
      */
     public static void defenderPlayerCombination() {
     	log.trace("Utilisation de la méthode DefenderPlayerCombination pour le mode Duel");
-        int nbreChiffres = parseInt(Config.getValue("nbreChiffres"));
-        System.out.println("Veuillez saisir une combinaison de " + nbreChiffres + " chiffres ");
+        System.out.println("Veuillez saisir une combinaison de " + digits + " chiffres ");
         boolean demandeSaisie = true;
         boolean isNumber;
+        combination = "";
 
         while (demandeSaisie) {
             Scanner scan = new Scanner(System.in);
@@ -46,7 +41,7 @@ abstract class Defender extends Game{
             }
             if (isNumber) {
                 solution = combination.split("");
-                demandeSaisie = checkNumber(nbreChiffres, demandeSaisie, combination);
+                demandeSaisie = checkNumber(digits, demandeSaisie, combination);
             }
         }
     }
@@ -57,47 +52,41 @@ abstract class Defender extends Game{
      */
     public static void generateAIProposition () {
     	log.trace("Utilisation de la méthode generateAIProposition pour le mode Duel");
-    	int digits = parseInt(Config.getValue("nbreChiffres"));
+    	prop = "";
     	if (numTry == 0) {
     		for (int i = 0; i < digits; i++) {
 		    	propositionAI.add(5);
+		    	prop = prop + propositionAI.get(i).toString();
 	    	}
-		    System.out.println("La proposition de votre adversaire est " + propositionAI);
+		    System.out.println("La proposition de votre adversaire est " + prop);
 		}
     }
     
     /**
-     *  Génération de la proposition du CPU
+     *  Génération de la réponse d'après la proposition du CPU
      *  La combinaison générée devient la proposition
      * @throws GameException 
      */
-    public static void playerDefenderResponse () throws GameException {
+	public static void playerDefenderResponse () throws GameException {
     	log.trace("Utilisation de la méthode playerDefenderResponse pour le mode Defender et Duel");
-    	int nbreChiffres = parseInt(Config.getValue("nbreChiffres"));
-    	boolean demandeSaisie = true;
-        boolean isSymbol;
-       
-    	Scanner scan = new Scanner(System.in);
     	System.out.println("Veuillez saisir votre réponse:");
-    	
-    	try {
-		    playerResp = scan.nextLine();
-		    int playerRespLength = playerResp.length();
-		    isSymbol = true;
-		    if (playerRespLength != nbreChiffres) {
-		    	throw new GameException("Une indication à " + nbreChiffres + " caractères est attendue");
-	    	}
+    	prop = "";
+    	boolean demandeSaisie = true;
+        boolean isSymbol = false;
+        
+    	while (demandeSaisie) {
+			Scanner scan = new Scanner(System.in);
+	        response = scan.nextLine();
+	        isSymbol = true;
+	        
+    		if (isSymbol) {
+    			responseDefender = response.split("");
+    			arrayProp.removeAll(arrayProp);
+    	        demandeSaisie = checkNumber(digits, demandeSaisie, response);
+    		}
     	}
-    	catch (InputMismatchException inputException) {
-    		System.out.println("Veuillez saisir des symboles !");
-    		isSymbol = false;
-    	}
-    	if (isSymbol) {
-    		responseDefender = playerResp.split("");
-    	    arrayProp.removeAll(arrayProp);
-
-    	}
-    	Integer newProp = 0;
+	    System.out.println("La réponse du joueur est : " + response);
+	    Integer newProp = 0;
 	    for (int i = 0; i < propositionAI.size(); i++) {	
     		newProp = propositionAI.get(i);
 
@@ -106,46 +95,51 @@ abstract class Defender extends Game{
 	    	} else if (responseDefender[i].equals("-")) {
 	    		newProp -= 1;	    			 
 	    	} 	
-	    	prop = newProp.toString();
-    		arrayProp.add(newProp);
+	    	arrayProp.add(newProp);
+	    	prop = prop + newProp.toString();
 	    }
     }
     
     /**
-     *  Génération de la proposition du CPU
-     *  La combinaison générée devient la proposition
+     *  Affichage de la nouvelle proposition du CPU générée à partir de la dernière réponse du joueur
+     *  Le tableau propositionAI contenant la dernière proposition est effacé
+     *  La nouvelle proposition est ajouté au tableau propositionAI
      */
     public static void displayNewAIProposition () {
     	log.trace("Utilisation de la méthode displayNewAIPropositions pour le mode Defender et Duel");
-    	System.out.println("Essai n° " + numTry);
-	    System.out.println("La nouvelle proposition de votre adversaire est " + arrayProp);
 	    propositionAI.removeAll(propositionAI);
 	    propositionAI.addAll(arrayProp);
+	    
+	    System.out.println("La nouvelle proposition de votre adversaire est " + prop);
     }
     
     /**
-     *  Génération de la proposition du CPU
-     *  La combinaison générée devient la proposition
+     *  Changement des tableaux PropositionAI et defenderCombination de type Integer en String
+     *  Comparaison des valeurs des deux tableaux afin de déterminer si la partie est gagnée ou perdue
      */
-    public static void isResolvedDefender () {
+    public Boolean isResolved() {
     	log.trace("Utilisation de la méthode isResolvedDefender pour le mode Defender");
-	   	String resultT2 = "";
-	   	String resultT1 = "";
 	   	
 	   	for (int value : propositionAI) { 
-   	     resultT2 = resultT2 + value;
+   	     prop = prop + value;
 	   	}
-	   	 System.out.println(resultT2);
-	   	 resultT1 = defenderCombination.get(0).toString();
-	   	 System.out.println(resultT1);
-   	 
-	   if (resultT2.equals(resultT1)) {
-   		 System.out.println("Vous avez gagné");
-   	 } else {
-   		 System.out.println("Vous avez perdu");
-   	 	}
-    	
+	   	 Debug.print(prop);
+	   	 
+	   	 combination = defenderCombination.get(0).toString();
+	   	 Debug.print(combination);
+
+	   	 return prop.equals(combination) ? true : false;
+  }
+    
+    public void displayResponse() {
+    	System.out.println("Proposition: " + getAIProp() + " -> Réponse : " + response);
     }
+
+	@Override
+	void checkProposition() {
+		// TODO Auto-generated method stub
+		
+	}
 	 
 }
 

@@ -24,24 +24,7 @@ public class MoreLess extends Game {
 		super();
 	}
     
-	/**
-     * Vérification des entrées du tableau proposition avec celui du tableau solution (mode Duel)
-     *
-     * Les variables present et wellPlaced sont instanciées selon les résultats
-     */
-    public void checkAIProposition() {
-    	log.trace("Utilisation de la méthode checkAIProposition pour le mode Duel");
-    	this.aiResponse = "";
-        for (int i = 0; i < solutionPlayer.length; i++) {
-            if (AIProposition[i].equals(solutionPlayer[i])) {
-                this.aiResponse += "=";            
-            }else if (Integer.parseInt(AIProposition[i]) > Integer.parseInt(solutionPlayer[i])) {
-                this.aiResponse += "-";
-            }else if (Integer.parseInt(AIProposition[i]) < Integer.parseInt(solutionPlayer[i])) {
-                this.aiResponse += "+";
-            }
-        }
-    }
+	
 
 	/**
      * Vérification des entrées du tableau proposition avec celui du tableau solution
@@ -62,24 +45,7 @@ public class MoreLess extends Game {
         }
     }
     
-	/**
-     * Vérification des entrées du tableau proposition avec celui du tableau solution (mode Duel)
-     *
-     * Les variables present et wellPlaced sont instanciées selon les résultats
-     */
-    public void checkPlayerProposition() {
-    	log.trace("Utilisation de la méthode checkPlayerProposition pour le mode Duel");
-    		playerResponse = "";
-        for (int i = 0; i < solutionAI.length; i++) {
-            if (playerProposition[i].equals(solutionAI[i])) {
-            	playerResponse += "=";            
-            }else if (Integer.parseInt(playerProposition[i]) > Integer.parseInt(solutionAI[i])) {
-            	playerResponse += "-";
-            }else if (Integer.parseInt(playerProposition[i]) < Integer.parseInt(solutionAI[i])) {
-            	playerResponse += "+";
-            }
-        }
-    }
+
 	
     /**
      * Retourne vrai ou faux selon la comparaison obtenue entre les méthodes getProp() contenant la propositon du joueur
@@ -95,24 +61,8 @@ public class MoreLess extends Game {
      * Affiche la proposition du joueur et la réponse
      *
      */
-    public void displayResponse() {
+	public void displayResponse() {
         System.out.println("Proposition: " + getProp() + " -> Réponse : " + response);
-    }
-    
-    /**
-     * Affiche la proposition du CPU et la réponse du joueur (mode Duel)
-     *
-     */
-    public void displayAIResponse() {
-        System.out.println("Proposition: " + getAIProp() + " -> Réponse : " + playerResp);
-    }
-    
-    /**
-     * Affiche la proposition du joueur et la réponse du CPU (mode Duel)
-     *
-     */
-    public void displayPlayerResponse() {
-        System.out.println("Proposition: " + getPlayerProp()  + " -> Réponse : " + playerResponse);
     }
 
 }

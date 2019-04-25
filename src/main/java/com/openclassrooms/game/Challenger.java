@@ -6,9 +6,20 @@ import java.util.InputMismatchException;
 import java.util.Random;
 import java.util.Scanner;
 
-abstract class Challenger extends Game {
+import org.apache.log4j.Logger;
 
-protected static Integer propositionChallenger;
+public class Challenger extends Game {
+
+	 /**
+     * Création de l'instance Logger pour la classe Challenger en utilisant la méthode getLogger()
+     */
+    private final static Logger log = Logger.getLogger(String.valueOf(Challenger.class));
+
+	 /**
+    * Proposition saisie par le joueur
+    */
+    protected static Integer propositionChallenger;
+
 	/**
      * Retourne la combination générée par le CPU
 	 * 
@@ -50,15 +61,38 @@ protected static Integer propositionChallenger;
         	}
 	    	 if (isNumber) {
 	    		 prop = propositionChallenger.toString();
-	    		 demandeSaisie = checkNumber(nbreChiffres, demandeSaisie, combination);
+	    		 demandeSaisie = checkNumber(nbreChiffres, demandeSaisie, prop);
 	         }
-        }
-        int tailleNbre = prop.length();
-        if ( nbreChiffres != tailleNbre){
-            throw new GameException("Une combinaison à  " + nbreChiffres + " chiffres est attendue");
         }
         proposition = prop.split("");
         System.out.println("La proposition du joueur est : " + prop);
     }
+    public void displayResponse() {
+    	System.out.println("Proposition: " + getPlayerProp()  + " -> Réponse : " + playerResponse);
+    }
     
+	/**
+     * Vérification des entrées du tableau proposition avec celui du tableau solution (mode Duel)
+     *
+     * Les variables present et wellPlaced sont instanciées selon les résultats
+     */
+    public void checkProposition() {
+    	log.trace("Utilisation de la méthode checkPlayerProposition pour le mode Duel");
+    		playerResponse = "";
+        for (int i = 0; i < solutionAI.length; i++) {
+            if (playerProposition[i].equals(solutionAI[i])) {
+            	playerResponse += "=";            
+            }else if (Integer.parseInt(playerProposition[i]) > Integer.parseInt(solutionAI[i])) {
+            	playerResponse += "-";
+            }else if (Integer.parseInt(playerProposition[i]) < Integer.parseInt(solutionAI[i])) {
+            	playerResponse += "+";
+            }
+        }
+    }
+
+	@Override
+	Boolean isResolved() {
+		// TODO Auto-generated method stub
+		return null;
+	}
 }

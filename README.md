@@ -2,11 +2,8 @@
 
 
 Ce projet s'inscrit dans le parcours de formation Openclassrooms de Développeur d'Application Java.
-Il a pour but le développement d'une application comprenant 2 jeux:
+Il a pour but le développement d'une application comprenant un jeu de Recherche +/-
 
-- Jeu de recherche +/-
-
-- Mastermind
 
 Le joueur a le choix entre 3 modes:
 
@@ -33,25 +30,12 @@ Si ce n'est pas le cas, vous pouvez télécharger la version sur ce lien: https:
 
 
 
-# Synthèse règle des jeux
-
-Voici les règles des jeux présents dans l'application:
-
-
-- Jeu de recherche +/-
+# Synthèse règle du jeu
 
 Découvrir la combinaison à x chiffres de l'adversaire (le défenseur). Pour ce faire, l'attaquant fait une proposition. 
 Le défenseur indique pour chaque chiffre de la combinaison proposée si le chiffre de sa combinaison est plus grand (+), plus petit (-) ou si c'est le bon chiffre (=).
 
 L'attaquant doit deviner la combinaison secrète en un nombre limité d'essais.
-
-- Mastermind
-
-Le but : découvrir la combinaison à x chiffres/couleurs de l'adversaire (le défenseur). Pour ce faire, l'attaquant fait une proposition. 
-Le défenseur indique pour chaque proposition le nombre de chiffre/couleur de la proposition qui apparaissent à la bonne place ou présent mais à la mauvaise place dans la combinaison secrète.
-
-L'attaquant doit deviner la combinaison secrète en un nombre limité d'essais.
-
 
 # Lancement du jeu
 

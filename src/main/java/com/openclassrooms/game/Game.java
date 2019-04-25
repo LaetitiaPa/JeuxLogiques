@@ -3,15 +3,10 @@ import org.apache.log4j.Logger;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.InputMismatchException;
 import java.util.List;
-import java.util.Random;
-import java.util.Scanner;
-import java.util.concurrent.ThreadLocalRandom;
 
 import static java.lang.Integer.parseInt;
 
-import java.sql.Array;
 
 /**
  * La classe Game contient toutes les caractéristiques d'un jeu
@@ -34,10 +29,24 @@ import java.sql.Array;
     private final static Logger log = Logger.getLogger(String.valueOf(Game.class));
     
     /**
+     *  Booléen indiquant pour le mode Duel si un joueur a gagné la partie en retournant Vrai
+     */
+    protected static Boolean winner = false;
+    /**
      * La combinaison secrète (mode Challenger et Defender)
      * @see Game#getCombination()
      */
     public static String combination = "";
+    
+    /**
+     * Liste contenant les symboles autorisés à la saisie par le joueur
+     */
+    protected static List<String> symbols = Arrays.asList("+", "-", "=");
+    
+    /**
+     * Liste contenant les symboles autorisés à la saisie par le joueur
+     */
+    protected static ArrayList<String> playerSymbols = new ArrayList<String>();
     
     /**
      * La combinaison secrète (mode Challenger et Defender): Peut être récupérée
@@ -50,6 +59,11 @@ import java.sql.Array;
      * @see Game#getDuelCombinationAI()
      */
     protected static int duelCombinationAI = 0;
+    
+    /**
+     * Le nombre de chiffres attendus
+     */
+    protected static int digits = parseInt(Config.getValue("nbreChiffres"));
     
     /**
      * La combinaison secrète du joueur (mode Duel): Peut être récupérée
@@ -190,8 +204,9 @@ import java.sql.Array;
      */
 	public void run() throws GameException {
        log.info("Début du jeu");
+       Defender defender = new Defender();
        
-       if(getMode() == 1) {
+       if (getMode() == 1) {
         	Challenger.generateChallengerCombination();
        } else if (getMode() == 2) {
     	   Defender.defenderPlayerCombination();
@@ -219,17 +234,32 @@ import java.sql.Array;
 		    } else if (this.getMode() == 2) {
 		    	Defender.generateAIProposition();
 	    		Defender.playerDefenderResponse();
-	    		Defender.displayNewAIProposition();
+	    		Defender.displayNewAIProposition();	
 		    }
 		    numTry++;
-		    numTryLeft();
-		}
-	    if (isResolved() && this.mode != 3) {
-			System.out.println("Bravo !!! vous avez gagné !");
-		} else if (!isResolved() && this.mode != 3) {
-			System.out.println("Oh ! Vous avez perdu !");
-		}
-	   	Menu.displayEndMenu();  
+		    if (this.mode != 3) {
+		    	numTryLeft();
+		    }
+		 }
+	     if (isResolved() && this.mode != 3) {
+	    	 switch(this.getMode()) {
+	    	 	case 1: 
+	    	 		System.out.println("Bravo !!! Vous avez gagné !");
+	    	 		break;
+	    	 	case 2: System.out.println("Oh ! Vous avez perdu !");
+	    	 }
+			
+		 } else if (!isResolved() && !checkNumTry()) {
+			 switch(this.getMode()) {
+	    	 	case 1: 
+	    	 		System.out.println("Oh ! Vous avez perdu !");
+	    	 		break;
+	    	 	case 2: System.out.println("Bravo !!! Vous avez gagné !");
+	    	 }
+		 }
+	     numTry = 0;
+   	     propositionAI.removeAll(propositionAI);
+   		 Menu.displayEndMenu();
 	}
 	  
   	 	
@@ -237,18 +267,18 @@ import java.sql.Array;
      * Combinaison de type Integer convertie en type String pour obtenir sa taille
      * Affiche un message demandant la saisie d'une nouvelle combinaison si tailleNombre != nbChiffres
      * 
-     * @return true
+     * @return false
      */
-    protected static boolean checkNumber(int nbreChiffres, boolean demandeSaisie, String prop) {
+    protected static boolean checkNumber(int digits, boolean demandeSaisie, String prop) {
         int tailleNbre = prop.length();
-        if (tailleNbre != nbreChiffres) {
-            System.out.println("Merci de ressaisir une combinaison de " + nbreChiffres);
-        } else if(tailleNbre == nbreChiffres) {
+        if (tailleNbre != digits) {
+            System.out.println("Merci de ressaisir une combinaison de " + digits + " chiffres");
+        } else if(tailleNbre == digits) {
             demandeSaisie = false;
         }
         return demandeSaisie;
     }
-    
+ 
     protected static void numTryLeft() {
     	int nbTryLeft = parseInt(Config.getValue("nbessai"));
 	    nbTryLeft -= numTry;
