@@ -50,27 +50,27 @@ public class Defender extends Game{
      *  Génération de la proposition du CPU
      *  La combinaison générée devient la proposition
      */
-    public static void generateAIProposition () {
+    @Override
+    public void generateAIRandom() {
     	log.trace("Utilisation de la méthode generateAIProposition pour le mode Duel");
     	prop = "";
-    	if (numTry == 0) {
-    		for (int i = 0; i < digits; i++) {
-		    	propositionAI.add(5);
-		    	prop = prop + propositionAI.get(i).toString();
-	    	}
-		    System.out.println("La proposition de votre adversaire est " + prop);
-		}
+    	
+		for (int i = 0; i < digits; i++) {
+	    	propositionAI.add(5);
+	    	prop = prop + propositionAI.get(i).toString();
+    	}
+	    System.out.println("La proposition de votre adversaire est " + prop);
+		
     }
     
     /**
      *  Génération de la réponse d'après la proposition du CPU
-     *  La combinaison générée devient la proposition
      * @throws GameException 
      */
 	public static void playerDefenderResponse () throws GameException {
     	log.trace("Utilisation de la méthode playerDefenderResponse pour le mode Defender et Duel");
     	System.out.println("Veuillez saisir votre réponse:");
-    	prop = "";
+    	
     	boolean demandeSaisie = true;
         boolean isSymbol = false;
         
@@ -85,20 +85,36 @@ public class Defender extends Game{
     	        demandeSaisie = checkNumber(digits, demandeSaisie, response);
     		}
     	}
-	    System.out.println("La réponse du joueur est : " + response);
-	    Integer newProp = 0;
-	    for (int i = 0; i < propositionAI.size(); i++) {	
-    		newProp = propositionAI.get(i);
-
-	    	if (responseDefender[i].equals("+")) {		    		
-	    		newProp += 1;
-	    	} else if (responseDefender[i].equals("-")) {
-	    		newProp -= 1;	    			 
-	    	} 	
-	    	arrayProp.add(newProp);
-	    	prop = prop + newProp.toString();
+    	System.out.println("La réponse du joueur est : " + response);
+	}
+	    
+	    /**
+	     *  Génération de la nouvelle proposition d'après la réponse du joueur
+	     *  La nouvelle combinaison générée devient la proposition
+	     */
+	    public static void NewPropositionAI() {
+	    	prop = "";
+		    Integer newProp = 0;
+		    for (int i = 0; i < propositionAI.size(); i++) {	
+	    		newProp = propositionAI.get(i);
+	
+		    	if (responseDefender[i].equals("+")) {		    		
+		    		newProp += 1;
+		    	} else if (responseDefender[i].equals("-")) {
+		    		newProp -= 1;	    			 
+		    	} 	
+		    	arrayProp.add(newProp);
+		    	prop = prop + newProp.toString();
+		    	AIProp = Integer.parseInt(prop);
+		    }
+		    propositionAI.removeAll(propositionAI);
+		    propositionAI.addAll(arrayProp);
+		    
+		    System.out.println("La nouvelle proposition de votre adversaire est " + prop);
 	    }
-    }
+	
+    
+    
     
     /**
      *  Affichage de la nouvelle proposition du CPU générée à partir de la dernière réponse du joueur
@@ -107,10 +123,7 @@ public class Defender extends Game{
      */
     public static void displayNewAIProposition () {
     	log.trace("Utilisation de la méthode displayNewAIPropositions pour le mode Defender et Duel");
-	    propositionAI.removeAll(propositionAI);
-	    propositionAI.addAll(arrayProp);
 	    
-	    System.out.println("La nouvelle proposition de votre adversaire est " + prop);
     }
     
     /**
@@ -132,7 +145,7 @@ public class Defender extends Game{
   }
     
     public void displayResponse() {
-    	System.out.println("Proposition: " + getAIProp() + " -> Réponse : " + response);
+    	System.out.println("Proposition: " + getProp() + " -> Réponse : " + response );
     }
 
 	@Override
@@ -140,7 +153,24 @@ public class Defender extends Game{
 		// TODO Auto-generated method stub
 		
 	}
-	 
+	
+	 /**
+     *  Génération de la proposition du CPU
+     *  La combinaison générée devient la proposition
+     */
+    public static void generateAIProposition () {
+    	log.trace("Utilisation de la méthode generateAIProposition pour le mode Duel");
+    	prop = "";
+    	if (numTry == 0) {
+    		for (int i = 0; i < digits; i++) {
+		    	propositionAI.add(5);
+		    	prop = prop + propositionAI.get(i).toString();
+	    	}
+		    System.out.println("La proposition de votre adversaire est " + prop);
+		}
+    }
+    
+    
 }
 
 

@@ -2,6 +2,7 @@ package com.openclassrooms.game;
 
 import static java.lang.Integer.parseInt;
 
+import java.util.Arrays;
 import java.util.InputMismatchException;
 import java.util.Random;
 import java.util.Scanner;
@@ -94,5 +95,24 @@ public class Challenger extends Game {
 	Boolean isResolved() {
 		// TODO Auto-generated method stub
 		return null;
+	}
+
+	@Override
+	void generateAIRandom() {
+	 Integer newProp = 0;
+	 prop = "";
+     for (int i = 0; i < propositionAI.size(); i++) {	
+		newProp = propositionAI.get(i);
+
+    	if (responseDefender[i].equals("+")) {		    		
+    		newProp += 1;
+    	} else if (responseDefender[i].equals("-")) {
+    		newProp -= 1;	    			 
+    	} 	
+    	arrayProp.add(newProp);
+    	prop = prop + newProp.toString();
+	 }
+     //propositionAI.removeAll(propositionAI);
+     //propositionAI.add(Integer.parseInt(prop));
 	}
 }

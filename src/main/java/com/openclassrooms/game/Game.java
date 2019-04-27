@@ -210,6 +210,7 @@ import static java.lang.Integer.parseInt;
         	Challenger.generateChallengerCombination();
        } else if (getMode() == 2) {
     	   Defender.defenderPlayerCombination();
+    	   Defender.generateAIProposition();
        } else if (this.getMode() == 3) {     	
     	   DuelRecherche.duelMode();
        }
@@ -232,9 +233,8 @@ import static java.lang.Integer.parseInt;
 		            continue;
 		        }
 		    } else if (this.getMode() == 2) {
-		    	Defender.generateAIProposition();
-	    		Defender.playerDefenderResponse();
-	    		Defender.displayNewAIProposition();	
+		    	Defender.playerDefenderResponse();
+		    	Defender.NewPropositionAI();
 		    }
 		    numTry++;
 		    if (this.mode != 3) {
@@ -397,4 +397,5 @@ import static java.lang.Integer.parseInt;
     abstract void checkProposition();
     abstract Boolean isResolved();
     abstract void displayResponse();
+    abstract void generateAIRandom();
 }

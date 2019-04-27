@@ -12,4 +12,5 @@ public class Main {
         log.info("Lancement du jeu");
          Menu.display();
     }
+    
 }

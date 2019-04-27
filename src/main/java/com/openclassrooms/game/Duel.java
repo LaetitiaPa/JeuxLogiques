@@ -2,6 +2,7 @@ package com.openclassrooms.game;
 
 import static java.lang.Integer.parseInt;
 
+import java.util.Arrays;
 import java.util.InputMismatchException;
 import java.util.Random;
 import java.util.Scanner;
@@ -139,7 +140,7 @@ public class Duel extends Game {
 		if (Duel.getDuelCombinationAI() == Duel.getPlayerProp()){
 			System.out.println("Vous avez gagné contre l'ordinateur");
 			winner = true;
-		} else if (Duel.getAIProp() == Duel.getDuelCombinationPlayer() && numTry > parseInt(Config.getValue("nbessai"))){
+		} else if (Duel.getAIProp() == Duel.getDuelCombinationPlayer() && numTry > 0){
 			System.out.println("Vous avez perdu contre l'ordinateur");
 			winner = true;
 		}
@@ -158,5 +159,20 @@ public class Duel extends Game {
 		// TODO Auto-generated method stub
 		return null;
 	}
+
+	@Override
+	void generateAIRandom() {
+		log.trace("Utilisation de la méthode generateAIRandom pour le mode Duel");
+		prop = "";
+		duelCombinationAI = 0;
+		for (int i = 0; i < digits; i++) {
+	    	propositionAI.add(5);
+	    	prop = prop + propositionAI.get(i).toString();
+    	}
+		duelCombinationAI = parseInt(prop);
+		solutionAI = prop.split("");
+		System.out.println("La proposition du joueur est : " + prop);
+	}
+	
 
 }

@@ -26,9 +26,10 @@ public class DuelRecherche extends Game {
 	
 		int playerResponse = 0; // Joueur == 0 : humain / joueur == 1 : ordinateur
 		boolean initPlayerResponse = false;
-
-		Duel.generateAICombinationDuel();
+		
 		log.info("Le CPU génère une combinaison secrète");
+		Duel.generateAICombinationDuel();
+		
 		
 		if ("true".equals(Config.getValue("cheatmode"))) {
             System.out.println("La combinaison secrète de l'ordinateur: " + Duel.getDuelCombinationAI());    
@@ -51,26 +52,25 @@ public class DuelRecherche extends Game {
 			if (!initPlayerResponse) {
 				Duel.generatePlayerCombinationDuel();
 			}
-			Duel.defenderDuel();
-			Defender.playerDefenderResponse();
-			defender.displayResponse();		
+			if (numTry == 1) {
+				defender.generateAIRandom();
+				Defender.playerDefenderResponse();
+				initPlayerResponse = true;
+				numTryLeft();
+			}
 			playerResponse = 0;
-			initPlayerResponse = true;
-			numTryLeft();
-			
 
 	        if (playerResponse == 0) {   	
 	            try {
 	            	Duel.challengerDuel();
 	            	challenger.checkProposition();
-	            	challenger.displayResponse();
+	              	Defender.NewPropositionAI();
 					playerResponse = 1;
 				} catch (GameException e) {
 					e.printStackTrace();
 				}
 	        }
 	        if (playerResponse == 1) {
-	        	Duel.defenderDuel();
 	        	Defender.playerDefenderResponse();
 	        	defender.displayResponse();	
 				playerResponse = 0;
@@ -103,5 +103,13 @@ public class DuelRecherche extends Game {
 	Boolean isResolved() {
 		// TODO Auto-generated method stub
 		return null;
+	}
+
+
+
+	@Override
+	void generateAIRandom() {
+		// TODO Auto-generated method stub
+		
 	}
 }
