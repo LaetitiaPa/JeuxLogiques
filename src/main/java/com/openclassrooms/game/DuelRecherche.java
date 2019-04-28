@@ -8,8 +8,7 @@ public class DuelRecherche extends Game {
      * Création de l'instance Logger de la classe DuelRecherche en utilisant la méthode getLogger()
      */
     private final static Logger log = Logger.getLogger(String.valueOf(DuelRecherche.class));
-    
-   
+
 	/**
      *<p>
      * Lancement d'une partie de Recherche +/- en mode duel
@@ -17,9 +16,6 @@ public class DuelRecherche extends Game {
 	 * @throws GameException 
      */
 	public static void duelMode() throws GameException {
-		Defender defender = new Defender();
-		Challenger challenger = new Challenger();
-		Duel duel = new Duel();
 		
 		log.info("Début du mode duel pour le jeu de recherche +/-");
 		int nbEssai = Integer.parseInt(Config.getValue("nbessai"));
@@ -38,14 +34,14 @@ public class DuelRecherche extends Game {
 		System.out.println("Le joueur propose sa réponse");
 		try {
 			Duel.challengerDuel();
-			duel.checkProposition();
+			Duel.isGameResolved();
 		} catch (GameException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		challenger.checkProposition();
-		challenger.displayResponse();
-		duel.checkProposition();
+		Challenger.checkChallengerProposition();
+		Challenger.displayPlayerResponse();
+		Duel.isGameResolved();
 		numTry++;
 
 		while (numTry < nbEssai && !winner) {
@@ -53,7 +49,7 @@ public class DuelRecherche extends Game {
 				Duel.generatePlayerCombinationDuel();
 			}
 			if (numTry == 1) {
-				defender.generateAIRandom();
+				Defender.generateAIRandom();
 				Defender.playerDefenderResponse();
 				initPlayerResponse = true;
 				numTryLeft();
@@ -63,7 +59,7 @@ public class DuelRecherche extends Game {
 	        if (playerResponse == 0) {   	
 	            try {
 	            	Duel.challengerDuel();
-	            	challenger.checkProposition();
+	            	Challenger.checkChallengerProposition();
 	              	Defender.NewPropositionAI();
 					playerResponse = 1;
 				} catch (GameException e) {
@@ -72,19 +68,17 @@ public class DuelRecherche extends Game {
 	        }
 	        if (playerResponse == 1) {
 	        	Defender.playerDefenderResponse();
-	        	defender.displayResponse();	
+	        	Defender.displayPlayerResponse();	
 				playerResponse = 0;
 			}
 	        numTry++;
 			numTryLeft();
-			duel.checkProposition();
+			Duel.isGameResolved();
 		}
 		if(!winner) {
 			System.out.println("Egalité, pas de vainqueur"); 
 		}
 }
-	
-
 
 	@Override
 	void displayResponse() {
@@ -105,11 +99,4 @@ public class DuelRecherche extends Game {
 		return null;
 	}
 
-
-
-	@Override
-	void generateAIRandom() {
-		// TODO Auto-generated method stub
-		
-	}
 }

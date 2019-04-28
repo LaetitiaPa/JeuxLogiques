@@ -65,10 +65,5 @@ public class MoreLess extends Game {
         System.out.println("Proposition: " + getProp() + " -> Réponse : " + response);
     }
 
-	@Override
-	void generateAIRandom() {
-		// TODO Auto-generated method stub
-		
-	}
 
 }

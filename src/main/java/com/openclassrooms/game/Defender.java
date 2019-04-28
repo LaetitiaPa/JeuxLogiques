@@ -6,7 +6,7 @@ import org.apache.log4j.Logger;
 
 
 
-public class Defender extends Game{
+abstract class Defender extends Game{
 	
 	 /**
      * Création de l'instance Logger pour la classe Defender en utilisant la méthode getLogger()
@@ -50,8 +50,7 @@ public class Defender extends Game{
      *  Génération de la proposition du CPU
      *  La combinaison générée devient la proposition
      */
-    @Override
-    public void generateAIRandom() {
+    public static void generateAIRandom() {
     	log.trace("Utilisation de la méthode generateAIProposition pour le mode Duel");
     	prop = "";
     	
@@ -144,32 +143,9 @@ public class Defender extends Game{
 	   	 return prop.equals(combination) ? true : false;
   }
     
-    public void displayResponse() {
+    public static void displayPlayerResponse() {
     	System.out.println("Proposition: " + getProp() + " -> Réponse : " + response );
     }
-
-	@Override
-	void checkProposition() {
-		// TODO Auto-generated method stub
-		
-	}
-	
-	 /**
-     *  Génération de la proposition du CPU
-     *  La combinaison générée devient la proposition
-     */
-    public static void generateAIProposition () {
-    	log.trace("Utilisation de la méthode generateAIProposition pour le mode Duel");
-    	prop = "";
-    	if (numTry == 0) {
-    		for (int i = 0; i < digits; i++) {
-		    	propositionAI.add(5);
-		    	prop = prop + propositionAI.get(i).toString();
-	    	}
-		    System.out.println("La proposition de votre adversaire est " + prop);
-		}
-    }
-    
     
 }
 

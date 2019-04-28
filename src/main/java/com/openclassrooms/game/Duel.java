@@ -9,7 +9,7 @@ import java.util.Scanner;
 
 import org.apache.log4j.Logger;
 
-public class Duel extends Game {
+abstract class Duel extends Game {
 	
 	/**
      * Création de l'instance Logger pour la classe Duel en utilisant la méthode getLogger()
@@ -135,8 +135,7 @@ public class Duel extends Game {
         return demandeSaisie;
     }
 
-	@Override
-	void checkProposition() {
+	public static void isGameResolved() {
 		if (Duel.getDuelCombinationAI() == Duel.getPlayerProp()){
 			System.out.println("Vous avez gagné contre l'ordinateur");
 			winner = true;
@@ -147,32 +146,5 @@ public class Duel extends Game {
 
 	}
 
-
-	@Override
-	void displayResponse() {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	Boolean isResolved() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	void generateAIRandom() {
-		log.trace("Utilisation de la méthode generateAIRandom pour le mode Duel");
-		prop = "";
-		duelCombinationAI = 0;
-		for (int i = 0; i < digits; i++) {
-	    	propositionAI.add(5);
-	    	prop = prop + propositionAI.get(i).toString();
-    	}
-		duelCombinationAI = parseInt(prop);
-		solutionAI = prop.split("");
-		System.out.println("La proposition du joueur est : " + prop);
-	}
-	
 
 }

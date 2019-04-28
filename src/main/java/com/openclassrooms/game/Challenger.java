@@ -9,7 +9,7 @@ import java.util.Scanner;
 
 import org.apache.log4j.Logger;
 
-public class Challenger extends Game {
+abstract class Challenger extends Game {
 
 	 /**
      * Création de l'instance Logger pour la classe Challenger en utilisant la méthode getLogger()
@@ -68,7 +68,7 @@ public class Challenger extends Game {
         proposition = prop.split("");
         System.out.println("La proposition du joueur est : " + prop);
     }
-    public void displayResponse() {
+    public static void displayPlayerResponse() {
     	System.out.println("Proposition: " + getPlayerProp()  + " -> Réponse : " + playerResponse);
     }
     
@@ -77,9 +77,9 @@ public class Challenger extends Game {
      *
      * Les variables present et wellPlaced sont instanciées selon les résultats
      */
-    public void checkProposition() {
+    public static void checkChallengerProposition() {
     	log.trace("Utilisation de la méthode checkPlayerProposition pour le mode Duel");
-    		playerResponse = "";
+    	playerResponse = "";
         for (int i = 0; i < solutionAI.length; i++) {
             if (playerProposition[i].equals(solutionAI[i])) {
             	playerResponse += "=";            
@@ -91,28 +91,4 @@ public class Challenger extends Game {
         }
     }
 
-	@Override
-	Boolean isResolved() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	void generateAIRandom() {
-	 Integer newProp = 0;
-	 prop = "";
-     for (int i = 0; i < propositionAI.size(); i++) {	
-		newProp = propositionAI.get(i);
-
-    	if (responseDefender[i].equals("+")) {		    		
-    		newProp += 1;
-    	} else if (responseDefender[i].equals("-")) {
-    		newProp -= 1;	    			 
-    	} 	
-    	arrayProp.add(newProp);
-    	prop = prop + newProp.toString();
-	 }
-     //propositionAI.removeAll(propositionAI);
-     //propositionAI.add(Integer.parseInt(prop));
-	}
 }

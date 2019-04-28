@@ -204,13 +204,12 @@ import static java.lang.Integer.parseInt;
      */
 	public void run() throws GameException {
        log.info("Début du jeu");
-       Defender defender = new Defender();
        
        if (getMode() == 1) {
         	Challenger.generateChallengerCombination();
        } else if (getMode() == 2) {
     	   Defender.defenderPlayerCombination();
-    	   Defender.generateAIProposition();
+    	   Defender.generateAIRandom();
        } else if (this.getMode() == 3) {     	
     	   DuelRecherche.duelMode();
        }
@@ -397,5 +396,4 @@ import static java.lang.Integer.parseInt;
     abstract void checkProposition();
     abstract Boolean isResolved();
     abstract void displayResponse();
-    abstract void generateAIRandom();
 }
