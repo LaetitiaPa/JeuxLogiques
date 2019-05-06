@@ -141,6 +141,7 @@ abstract class Duel extends Game {
 			winner = true;
 		} else if (Duel.getAIProp() == Duel.getDuelCombinationPlayer() && numTry > 0){
 			System.out.println("Vous avez perdu contre l'ordinateur");
+			System.out.println("La combinaison était : " + Duel.getDuelCombinationAI());
 			winner = true;
 		}
 

@@ -76,7 +76,8 @@ public class DuelRecherche extends Game {
 			Duel.isGameResolved();
 		}
 		if(!winner) {
-			System.out.println("Egalité, pas de vainqueur"); 
+			System.out.println("Egalité, pas de vainqueur");
+			System.out.println("La combinaison était : " + Duel.getDuelCombinationAI());
 		}
 }
 

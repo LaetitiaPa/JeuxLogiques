@@ -29,9 +29,15 @@ import static java.lang.Integer.parseInt;
     private final static Logger log = Logger.getLogger(String.valueOf(Game.class));
     
     /**
-     *  Booléen indiquant pour le mode Duel si un joueur a gagné la partie en retournant Vrai
+     *  Booléen indiquant pour le mode Duel si un joueur a gagné la partie en retournant VRAI
      */
     protected static Boolean winner = false;
+    
+    /**
+     *  Booléen retournant VRAI si la saisie comporte uniquement des les symboles attendus (+, -, =) 
+     */
+    protected static boolean isSymbol = true;
+
     /**
      * La combinaison secrète (mode Challenger et Defender)
      * @see Game#getCombination()
@@ -41,16 +47,16 @@ import static java.lang.Integer.parseInt;
     /**
      * Liste contenant les symboles autorisés à la saisie par le joueur
      */
-    protected static List<String> symbols = Arrays.asList("+", "-", "=");
-    
+    protected static String[] symbols = new String[] {"+", "-", "="};
+
     /**
-     * Liste contenant les symboles autorisés à la saisie par le joueur
+     * Liste contenant les symboles saisis par le joueur
      */
-    protected static ArrayList<String> playerSymbols = new ArrayList<String>();
+    protected static String[] playerSymbols;
     
     /**
      * La combinaison secrète (mode Challenger et Defender): Peut être récupérée
-     * @see Game#getCombination()
+     * 
      */
     protected static ArrayList<Integer> defenderCombination = new ArrayList<Integer>();
 
@@ -103,6 +109,7 @@ import static java.lang.Integer.parseInt;
      * Tableau contenant la proposition du joueur
      */
     protected static String[] proposition;
+    
     /**
      * Tableau contenant la proposition du CPU pour le mode Duel
      */
@@ -204,7 +211,6 @@ import static java.lang.Integer.parseInt;
      */
 	public void run() throws GameException {
        log.info("Début du jeu");
-       
        if (getMode() == 1) {
         	Challenger.generateChallengerCombination();
        } else if (getMode() == 2) {
@@ -216,7 +222,7 @@ import static java.lang.Integer.parseInt;
        
        if ("true".equals(Config.getValue("cheatmode"))) {
 	       log.debug(getCombination());
-	       System.out.println(getCombination());   
+	       System.out.println(getCombination());
        }
            
 	   while (isRunning()) {
@@ -252,6 +258,7 @@ import static java.lang.Integer.parseInt;
 			 switch(this.getMode()) {
 	    	 	case 1: 
 	    	 		System.out.println("Oh ! Vous avez perdu !");
+	    	 		System.out.println("La combinaison était : " + getCombination());
 	    	 		break;
 	    	 	case 2: System.out.println("Bravo !!! Vous avez gagné !");
 	    	 }
@@ -270,13 +277,15 @@ import static java.lang.Integer.parseInt;
      */
     protected static boolean checkNumber(int digits, boolean demandeSaisie, String prop) {
         int tailleNbre = prop.length();
-        if (tailleNbre != digits) {
+      
+         if (tailleNbre != digits) {
             System.out.println("Merci de ressaisir une combinaison de " + digits + " chiffres");
-        } else if(tailleNbre == digits) {
+         } else if(tailleNbre == digits) {
             demandeSaisie = false;
-        }
-        return demandeSaisie;
+         }
+         return demandeSaisie;
     }
+    
  
     protected static void numTryLeft() {
     	int nbTryLeft = parseInt(Config.getValue("nbessai"));

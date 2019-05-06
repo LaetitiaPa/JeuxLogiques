@@ -22,7 +22,7 @@ abstract class Challenger extends Game {
     protected static Integer propositionChallenger;
 
 	/**
-     * Retourne la combination générée par le CPU
+     * Retourne la combinaison générée servant de combinaison pour l'adversaire (CPU)
 	 * 
      * @return La combinaison générée par la méthode ThreadLocalRandom
      */
@@ -39,7 +39,7 @@ abstract class Challenger extends Game {
     }
     
     /**
-     *  Saisi de la proposition par le joueur
+     *  Saisie de la proposition par le joueur
      *  La saisie devient la proposition
      *
      * @throws GameException si les chiffres saisis sont supérieurs ou inférieurs au nombre attendu

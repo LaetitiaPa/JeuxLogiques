@@ -71,27 +71,26 @@ abstract class Defender extends Game{
     	System.out.println("Veuillez saisir votre réponse:");
     	
     	boolean demandeSaisie = true;
-        boolean isSymbol = false;
-        
+      
     	while (demandeSaisie) {
 			Scanner scan = new Scanner(System.in);
 	        response = scan.nextLine();
-	        isSymbol = true;
 	        
-    		if (isSymbol) {
-    			responseDefender = response.split("");
-    			arrayProp.removeAll(arrayProp);
-    	        demandeSaisie = checkNumber(digits, demandeSaisie, response);
-    		}
+			responseDefender = response.split("");
+			arrayProp.removeAll(arrayProp);
+		    demandeSaisie = checkNumber(digits, demandeSaisie, response);
     	}
     	System.out.println("La réponse du joueur est : " + response);
-	}
-	    
+    }
+    	
+
+	  
 	    /**
 	     *  Génération de la nouvelle proposition d'après la réponse du joueur
 	     *  La nouvelle combinaison générée devient la proposition
 	     */
 	    public static void NewPropositionAI() {
+	    	Debug.print("Valeurs contenues dans le tableau propositionAI avant comparaison: " + propositionAI);
 	    	prop = "";
 		    Integer newProp = 0;
 		    for (int i = 0; i < propositionAI.size(); i++) {	
@@ -108,6 +107,7 @@ abstract class Defender extends Game{
 		    }
 		    propositionAI.removeAll(propositionAI);
 		    propositionAI.addAll(arrayProp);
+		    Debug.print("Nouvelles valeurs contenues dans le tableau propositionAI: " + propositionAI);
 		    
 		    System.out.println("La nouvelle proposition de votre adversaire est " + prop);
 	    }
@@ -135,10 +135,8 @@ abstract class Defender extends Game{
 	   	for (int value : propositionAI) { 
    	     prop = prop + value;
 	   	}
-	   	 Debug.print(prop);
 	   	 
 	   	 combination = defenderCombination.get(0).toString();
-	   	 Debug.print(combination);
 
 	   	 return prop.equals(combination) ? true : false;
   }
