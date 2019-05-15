@@ -1,0 +1,13 @@
+com\openclassrooms\game\Menu.class
+TestGame.class
+com\openclassrooms\game\Game.class
+com\openclassrooms\game\MoreLess.class
+com\openclassrooms\game\Config.class
+com\openclassrooms\game\test.class
+com\openclassrooms\game\GameException.class
+com\openclassrooms\game\Main.class
+com\openclassrooms\game\Defender.class
+com\openclassrooms\game\DuelRecherche.class
+com\openclassrooms\game\Debug.class
+com\openclassrooms\game\Challenger.class
+com\openclassrooms\game\Duel.class

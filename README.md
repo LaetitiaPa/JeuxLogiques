@@ -39,15 +39,12 @@ L'attaquant doit deviner la combinaison secrète en un nombre limité d'essais.
 
 # Lancement du jeu
 
-** Aller dans le 'target':
+** Aller dans le dossier 'target' depuis la commande windows :
+
 cd  target
 
-** Lancer l'exécution
+** Lancer l'exécution 
 java -jar  game.jar
-
-ou 
-
-Exécuter le fichier game.bat se trouvant dans le dossier target.
 
 
 # Lien Github
