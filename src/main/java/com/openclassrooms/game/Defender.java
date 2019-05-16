@@ -2,6 +2,9 @@ package com.openclassrooms.game;
 
 import java.util.InputMismatchException;
 import java.util.Scanner;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
 import org.apache.log4j.Logger;
 
 
@@ -76,9 +79,22 @@ abstract class Defender extends Game{
 			Scanner scan = new Scanner(System.in);
 	        response = scan.nextLine();
 	        
-			responseDefender = response.split("");
-			arrayProp.removeAll(arrayProp);
-		    demandeSaisie = checkNumber(digits, demandeSaisie, response);
+	        String pattern = "([=+-]{4})";
+	        
+			// Create a Pattern object
+			Pattern r = Pattern.compile(pattern);
+
+			// Now create matcher object.
+			Matcher m = r.matcher(response);
+			
+			if (m.find()) {
+				responseDefender = response.split("");
+				arrayProp.removeAll(arrayProp);
+			    demandeSaisie = checkNumber(digits, demandeSaisie, response);
+			} else {
+				System.out.println("Veuillez saisir - + ou =");
+			}
+			
     	}
     	System.out.println("La réponse du joueur est : " + response);
     }
