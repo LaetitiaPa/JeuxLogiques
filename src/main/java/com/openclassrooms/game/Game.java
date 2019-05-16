@@ -265,7 +265,7 @@ import static java.lang.Integer.parseInt;
 		 }
 	     numTry = 0;
    	     propositionAI.removeAll(propositionAI);
-   		 Menu.displayEndMenu();
+   		 Menu.endGameMenu();
 	}
 	  
   	 	

@@ -163,6 +163,9 @@ public class Menu {
             runGame();
         } else if (endGameChoice == 3) {
             quit();
+        } else {
+        	System.out.println("Veuillez choisir uniquement 1, 2 ou 3 !");
+        	endGameMenu();
         }
     }
 }
